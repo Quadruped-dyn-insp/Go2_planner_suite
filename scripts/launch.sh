@@ -14,6 +14,10 @@ source ~/Documents/Far_planner_test/workspaces/autonomous_exploration/install/se
 echo "Sourcing far_planner workspace setup..."
 source ~/Documents/Far_planner_test/workspaces/far_planner/install/setup.sh
 
+# Source the fastlio2 workspace
+echo "Sourcing fastlio2 workspace setup..."
+source ~/Documents/Far_planner_test/workspaces/fastlio2/install/setup.sh
+
 # Source the pipeline_launcher workspace
 echo "Sourcing pipeline_launcher workspace setup..."
 source ~/Documents/Far_planner_test/workspaces/pipeline_launcher/install/setup.sh

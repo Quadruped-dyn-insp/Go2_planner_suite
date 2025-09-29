@@ -19,7 +19,8 @@ echo "✓ ROS2 environment sourced"
 # Build workspaces in dependency order
 WORKSPACES=(
     "autonomous_exploration"
-    "far_planner" 
+    "far_planner"
+    "fastlio2"
     "pipeline_launcher"
 )
 
@@ -57,5 +58,5 @@ done
 
 echo ""
 echo "=== Build Complete ==="
-echo "All workspaces built successfully!"
+echo "All workspaces (autonomous_exploration, far_planner, fastlio2, pipeline_launcher) built successfully!"
 echo "To launch the pipeline, run: ./scripts/launch.sh"

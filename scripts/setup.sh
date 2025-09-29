@@ -34,9 +34,21 @@ sudo apt install -y \
     python3-vcstool \
     build-essential \
     cmake \
-    git
+    git \
+    libeigen3-dev \
+    libpcl-dev
 
 echo "✓ System dependencies installed"
+
+# Install fastlio2 specific dependencies
+echo "Installing fastlio2 specific dependencies..."
+sudo apt install -y \
+    ros-humble-pcl-ros \
+    ros-humble-pcl-conversions \
+    ros-humble-vision-opencv \
+    ros-humble-image-transport
+
+echo "✓ fastlio2 dependencies installed"
 
 # Initialize rosdep if needed
 if [ ! -f /etc/ros/rosdep/sources.list.d/20-default.list ]; then
@@ -70,5 +82,6 @@ echo "✓ Scripts made executable"
 
 echo ""
 echo "=== Setup Complete ==="
+echo "All workspaces (autonomous_exploration, far_planner, fastlio2, pipeline_launcher) are ready!"
 echo "To build the workspaces, run: ./scripts/build.sh"
 echo "To launch the pipeline, run: ./scripts/launch.sh"
