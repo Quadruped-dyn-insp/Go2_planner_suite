@@ -1,0 +1,7 @@
+[submodule "livox_ros_driver2"]
+	path = livox_ros_driver2
+	url = https://github.com/Livox-SDK/livox_ros_driver2.git
+[submodule "FAST_LIO/include/ikd-Tree"]
+	path = FAST_LIO/include/ikd-Tree
+	url = https://github.com/hku-mars/ikd-Tree.git
+	branch = fast_lio
