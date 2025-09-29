@@ -101,6 +101,27 @@ far_planner_workspace/
 - Includes boundary handling, graph decoding, and visibility graph processing
 - Contains RViz plugins for goal point selection and teleop control
 
+- **What it is:** Core **FAR (Fast & Assured Reachability)** **global planner**.
+  - Algorithms: boundary handling, graph decoding, visibility-graph–style planning.
+  - Tooling: RViz plugins for **goal selection** and **teleop** to quickly test paths.
+
+- **Inputs (expected)**
+  - A **global frame** (usually `map`) with a consistent TF tree.
+  - An **obstacle/traversability representation** (from terrain analysis or your mapping stack).
+  - A **goal** (from the RViz goal plugin or a topic).
+  - The robot’s **current pose** (through TF / odometry).
+
+- **Outputs**
+  - A **global path** (e.g., `nav_msgs/Path`) and associated planner markers for RViz.
+  - Optional intermediate **waypoints** depending on config.
+
+---
+
+##### Configuration (real robot vs. simulation)
+
+When running on a **real robot**, update this YAML to match your stack (frames, topics, robot size, map source). 
+
+
 #### 3. `workspaces/pipeline_launcher/`
 - Orchestrates the complete system launch sequence
 - Coordinates timing between fast_lio mapping, vehicle simulation, and far_planner
