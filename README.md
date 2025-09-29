@@ -1,3 +1,8 @@
+
+<p align="center">
+	<img src="images/image.png" alt="Far Planner Overview" width="600" />
+</p>
+
 # Far Planner Test - Source Directory
 
 This directory contains the complete Far Planner autonomous navigation system with integrated components.

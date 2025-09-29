@@ -15,9 +15,9 @@ def generate_launch_description():
     This version handles both .launch.py and .launch files
     """
     
-    # Launch fast_lio mapping immediately
+    # Launch fast_lio mapping immediately (with RViz disabled)
     fast_lio_launch = ExecuteProcess(
-        cmd=['ros2', 'launch', 'fast_lio', 'mapping_mid360.launch.py'],
+        cmd=['ros2', 'launch', 'fast_lio', 'mapping_mid360.launch.py', 'rviz:=false'],
         output='screen'
     )
     

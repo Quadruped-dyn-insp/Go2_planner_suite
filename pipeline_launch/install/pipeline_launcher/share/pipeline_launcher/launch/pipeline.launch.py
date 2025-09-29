@@ -18,11 +18,14 @@ def generate_launch_description():
     vehicle_simulator_pkg = FindPackageShare('vehicle_simulator')
     far_planner_pkg = FindPackageShare('far_planner')
     
-    # Launch fast_lio mapping immediately
+    # Launch fast_lio mapping immediately (with RViz disabled)
     fast_lio_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
             fast_lio_pkg, '/launch/mapping_mid360.launch.py'
-        ])
+        ]),
+        launch_arguments={
+            'rviz': 'false'
+        }.items()
     )
     
     # Launch vehicle_simulator after 3 seconds
