@@ -29,11 +29,6 @@ far_planner_workspace/
 ### Workspace Components:
 
 #### 1. `workspaces/autonomous_exploration/`
-- Contains the autonomous exploration and mapping framework
-- Includes LOAM interface, local planner, terrain analysis, and vehicle simulation
-- Provides sensor scan generation and visualization tools
-
-#### 1. `workspaces/autonomous_exploration/`
 
 - **What it is:** The mid-layer autonomous exploration & mapping framework.
   - Modules: **LOAM interface**, **local planner**, **terrain analysis**, **vehicle simulation**, **sensor-scan generation**, and RViz visualization tools.
