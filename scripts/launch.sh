@@ -6,17 +6,17 @@
 echo "=== Pipeline Launch Script ==="
 echo "Sourcing required setup files..."
 
-# Source the autonomous exploration development environment
-echo "Sourcing autonomous_exploration_development_environment setup..."
-source ~/Documents/Far_planner_test/autonomous_exploration_development_environment/install/setup.sh
+# Source the autonomous exploration workspace
+echo "Sourcing autonomous_exploration workspace setup..."
+source ~/Documents/Far_planner_test/workspaces/autonomous_exploration/install/setup.sh
 
-# Source the far_planner setup
-echo "Sourcing far_planner setup..."
-source ~/Documents/Far_planner_test/far_planner/install/setup.sh
+# Source the far_planner workspace
+echo "Sourcing far_planner workspace setup..."
+source ~/Documents/Far_planner_test/workspaces/far_planner/install/setup.sh
 
-# Source the pipeline_launch setup
-echo "Sourcing pipeline_launch setup..."
-source ~/Documents/Far_planner_test/pipeline_launch/install/setup.sh
+# Source the pipeline_launcher workspace
+echo "Sourcing pipeline_launcher workspace setup..."
+source ~/Documents/Far_planner_test/workspaces/pipeline_launcher/install/setup.sh
 
 echo "All setup files sourced successfully!"
 echo ""

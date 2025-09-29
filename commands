@@ -1,0 +1,15 @@
+colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
+
+colcon build --symlink-install \
+  --cmake-args -DCMAKE_BUILD_TYPE=Release \
+  --parallel-workers 1
+
+
+MAKEFLAGS="-j2" colcon build --symlink-install \
+  --cmake-args -DCMAKE_BUILD_TYPE=Release
+
+sudo apt install ninja-build
+
+colcon build --symlink-install \
+  --cmake-args -DCMAKE_BUILD_TYPE=Release -G Ninja \
+  --parallel-workers 2

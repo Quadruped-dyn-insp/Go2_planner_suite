@@ -1,27 +1,44 @@
 
 <p align="center">
-	<img src="images/image.png" alt="Far Planner Overview" width="600" />
-</p>
-
-# Far Planner Test - Source Directory
+  <img src="docs/images/image.png" alt="Far Planner Overview" width="600" />
+</p># Far Planner Test - Source Directory
 
 This directory contains the complete Far Planner autonomous navigation system with integrated components.
 
 ## Project Structure
 
-The workspace consists of three main components:
+```
+far_planner_workspace/
+├── README.md              # Project documentation
+├── docs/                  # Documentation and resources
+│   ├── images/           # Project images and diagrams
+│   ├── setup/            # Setup and installation guides
+│   └── api/              # API documentation
+├── scripts/              # Utility and launch scripts
+│   ├── launch.sh         # Main pipeline launch script
+│   ├── setup.sh          # Environment setup script
+│   └── build.sh          # Build automation script
+├── config/               # Global configuration files
+├── tools/                # Development and utility tools
+└── workspaces/           # ROS2 workspaces
+    ├── autonomous_exploration/  # Autonomous exploration framework
+    ├── far_planner/            # Core FAR planner implementation  
+    └── pipeline_launcher/      # System orchestration
+```
 
-### 1. `autonomous_exploration_development_environment/`
+### Workspace Components:
+
+#### 1. `workspaces/autonomous_exploration/`
 - Contains the autonomous exploration and mapping framework
 - Includes LOAM interface, local planner, terrain analysis, and vehicle simulation
 - Provides sensor scan generation and visualization tools
 
-### 2. `far_planner/`
+#### 2. `workspaces/far_planner/`
 - Core FAR (Fast and Assured Reachability) planner implementation
 - Includes boundary handling, graph decoding, and visibility graph processing
 - Contains RViz plugins for goal point selection and teleop control
 
-### 3. `pipeline_launch/`
+#### 3. `workspaces/pipeline_launcher/`
 - Orchestrates the complete system launch sequence
 - Coordinates timing between fast_lio mapping, vehicle simulation, and far_planner
 - Provides unified launch interface for the entire pipeline
@@ -35,7 +52,7 @@ The workspace consists of three main components:
 ### Method 1: Using the Launch Script (Recommended)
 ```bash
 # Run the automated launch script
-./launch_pipeline.sh
+./scripts/launch.sh
 ```
 
 This script will:
@@ -46,9 +63,9 @@ This script will:
 ### Method 2: Manual Launch
 ```bash
 # Source all required setup files
-source ~/Documents/Far_planner_test/autonomous_exploration_development_environment/install/setup.sh
-source ~/Documents/Far_planner_test/far_planner/install/setup.sh
-source ~/Documents/Far_planner_test/pipeline_launch/install/setup.sh
+source ~/Documents/Far_planner_test/workspaces/autonomous_exploration/install/setup.sh
+source ~/Documents/Far_planner_test/workspaces/far_planner/install/setup.sh
+source ~/Documents/Far_planner_test/workspaces/pipeline_launcher/install/setup.sh
 
 # Launch the pipeline
 ros2 launch pipeline_launcher pipeline.launch.py
@@ -75,18 +92,18 @@ ros2 launch pipeline_launcher pipeline_alternative.launch.py
 If you need to rebuild any component:
 
 ```bash
-# Build autonomous exploration environment
-cd autonomous_exploration_development_environment
+# Build autonomous exploration workspace
+cd workspaces/autonomous_exploration
 colcon build
 source install/setup.sh
 
-# Build far planner
+# Build far planner workspace
 cd ../far_planner  
 colcon build
 source install/setup.sh
 
-# Build pipeline launcher
-cd ../pipeline_launch
+# Build pipeline launcher workspace
+cd ../pipeline_launcher
 colcon build
 source install/setup.sh
 ```
