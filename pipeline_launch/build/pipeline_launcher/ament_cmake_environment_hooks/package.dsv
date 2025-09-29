@@ -1,0 +1,4 @@
+source;share/pipeline_launcher/local_setup.bash
+source;share/pipeline_launcher/local_setup.dsv
+source;share/pipeline_launcher/local_setup.sh
+source;share/pipeline_launcher/local_setup.zsh
