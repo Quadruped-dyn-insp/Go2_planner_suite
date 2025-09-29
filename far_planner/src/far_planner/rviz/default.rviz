@@ -3,9 +3,10 @@ Panels:
     Help Height: 0
     Name: Displays
     Property Tree Widget:
-      Expanded: ~
+      Expanded:
+        - /RegScan1
       Splitter Ratio: 0.8294117450714111
-    Tree Height: 666
+    Tree Height: 865
   - Class: rviz_common/Selection
     Name: Selection
   - Class: rviz_common/Tool Properties
@@ -22,7 +23,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: FreePaths
+    SyncSource: RegScan
   - Class: teleop_rviz_plugin/TeleopPanel
     Name: TeleopPanel
 Visualization Manager:
@@ -49,7 +50,7 @@ Visualization Manager:
         Reliability Policy: Reliable
         Value: /camera/image_raw
       Value: true
-    - Alpha: 0.20000000298023224
+    - Alpha: 0.05000000074505806
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
         Max Value: 0.9582680463790894
@@ -61,7 +62,7 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: FlatColor
       Decay Time: 10
-      Enabled: false
+      Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Max Intensity: 0
@@ -82,7 +83,7 @@ Visualization Manager:
         Value: /registered_scan
       Use Fixed Frame: true
       Use rainbow: true
-      Value: false
+      Value: true
     - Alpha: 0.20000000298023224
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
@@ -129,7 +130,7 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: Intensity
       Decay Time: 0
-      Enabled: false
+      Enabled: true
       Invert Rainbow: true
       Max Color: 255; 255; 255
       Max Intensity: 0.10000000149011612
@@ -150,7 +151,7 @@ Visualization Manager:
         Value: /terrain_map
       Use Fixed Frame: true
       Use rainbow: true
-      Value: false
+      Value: true
     - Alpha: 1
       Autocompute Intensity Bounds: false
       Autocompute Value Bounds:
@@ -163,7 +164,7 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: Intensity
       Decay Time: 0
-      Enabled: false
+      Enabled: true
       Invert Rainbow: true
       Max Color: 255; 255; 255
       Max Intensity: 0.20000000298023224
@@ -184,7 +185,7 @@ Visualization Manager:
         Value: /terrain_map_ext
       Use Fixed Frame: true
       Use rainbow: true
-      Value: false
+      Value: true
     - Alpha: 1
       Buffer Length: 1
       Class: rviz_default_plugins/Path
@@ -252,12 +253,9 @@ Visualization Manager:
       Name: Goalpoint
       Namespaces:
         clear_nodes: false
-        free_goal: true
         free_odom_position: false
         last_nav_node: false
-        original_goal: true
         out_contour: false
-        waypoint: true
       Topic:
         Depth: 5
         Durability Policy: Volatile
@@ -268,7 +266,7 @@ Visualization Manager:
     - Alpha: 1
       Class: rviz_default_plugins/Polygon
       Color: 0; 255; 0
-      Enabled: false
+      Enabled: true
       Name: Boundary
       Topic:
         Depth: 5
@@ -277,7 +275,7 @@ Visualization Manager:
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /navigation_boundary
-      Value: false
+      Value: true
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
@@ -290,7 +288,7 @@ Visualization Manager:
       Color: 255; 25; 0
       Color Transformer: ""
       Decay Time: 0
-      Enabled: false
+      Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Max Intensity: 4096
@@ -311,7 +309,7 @@ Visualization Manager:
         Value: /added_obstacles
       Use Fixed Frame: true
       Use rainbow: true
-      Value: false
+      Value: true
     - Alpha: 0.10000000149011612
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
@@ -358,7 +356,7 @@ Visualization Manager:
       Color: 0; 170; 255
       Color Transformer: FlatColor
       Decay Time: 0
-      Enabled: false
+      Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Max Intensity: 0
@@ -379,7 +377,7 @@ Visualization Manager:
         Value: /explored_areas
       Use Fixed Frame: true
       Use rainbow: true
-      Value: false
+      Value: true
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
@@ -392,7 +390,7 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: Intensity
       Decay Time: 0
-      Enabled: false
+      Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Max Intensity: 46.35158157348633
@@ -413,12 +411,12 @@ Visualization Manager:
         Value: /trajectory
       Use Fixed Frame: true
       Use rainbow: true
-      Value: false
+      Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
       Name: GlobalPath
       Namespaces:
-        global_path: true
+        {}
       Topic:
         Depth: 5
         Durability Policy: Volatile
@@ -460,10 +458,7 @@ Visualization Manager:
       Enabled: true
       Name: ViewpointExtend
       Namespaces:
-        corner_direct: true
-        extend_viewpoint: true
-        origin_viewpoint: true
-        raytracing_line: true
+        {}
       Topic:
         Depth: 5
         Durability Policy: Volatile
@@ -493,35 +488,35 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 131.4784698486328
+      Distance: 56.81373977661133
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 61.70448684692383
-        Y: 20.523916244506836
-        Z: 2.2310969829559326
+        X: 5.1011433601379395
+        Y: 9.222140312194824
+        Z: -8.55322551727295
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.5697963237762451
+      Pitch: 0.8547970056533813
       Target Frame: map
       Value: Orbit (rviz)
-      Yaw: 4.715415000915527
+      Yaw: 5.405447483062744
     Saved: ~
 Window Geometry:
   Displays:
-    collapsed: true
-  Height: 817
-  Hide Left Dock: true
+    collapsed: false
+  Height: 1016
+  Hide Left Dock: false
   Hide Right Dock: false
   Image:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd000000040000000000000156000002d7fc0200000009fb0000001200530065006c0065006300740069006f006e000000003d000001b80000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073000000003d000002d7000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000001400430061006d0065007200610049006e0069007401000004740000001600000000000000000000000100000102000002d7fc0200000006fb0000000a0049006d006100670065010000003d000000d30000002800fffffffb0000000a0049006d006100670065010000003d000000de0000000000000000fb0000001600540065006c0065006f007000500061006e0065006c0100000116000001fe000000de00fffffffb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000018a0000018a000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000073d0000003efc0100000002fb0000000800540069006d006500000000000000073d000002fb00fffffffb0000000800540069006d006501000000000000045000000000000000000000049e000002d700000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000400000000000001560000039efc0200000009fb0000001200530065006c0065006300740069006f006e000000003d000001b80000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d0000039e000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000001400430061006d0065007200610049006e00690074010000047400000016000000000000000000000001000001020000039efc0200000006fb0000000a0049006d006100670065010000003d0000010d0000002800fffffffb0000000a0049006d006100670065010000003d000000de0000000000000000fb0000001600540065006c0065006f007000500061006e0065006c01000001500000028b000000de00fffffffb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000018a0000018a000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000073d0000003efc0100000002fb0000000800540069006d006500000000000000073d000002fb00fffffffb0000000800540069006d006501000000000000045000000000000000000000051c0000039e00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   TeleopPanel:
@@ -532,6 +527,6 @@ Window Geometry:
     collapsed: false
   Views:
     collapsed: false
-  Width: 1446
-  X: 58
+  Width: 1920
+  X: 0
   Y: 27
