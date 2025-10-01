@@ -97,7 +97,7 @@ far_planner_workspace/
 
 
 #### 2. `workspaces/far_planner/`
-- Core FAR (Fast and Assured Reachability) planner implementation
+- Core FAR (Fast, Attemptable Route Planner for Navigation in Known and Unknown Environments) planner implementation
 - Includes boundary handling, graph decoding, and visibility graph processing
 - Contains RViz plugins for goal point selection and teleop control
 
@@ -178,12 +178,12 @@ If you need to rebuild any component:
 ```bash
 # Build autonomous exploration workspace
 cd workspaces/autonomous_exploration
-colcon build
+colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
 source install/setup.sh
 
 # Build far planner workspace
 cd ../far_planner  
-colcon build
+colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
 source install/setup.sh
 
 # Build pipeline launcher workspace
