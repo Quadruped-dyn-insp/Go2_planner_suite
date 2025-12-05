@@ -44,17 +44,6 @@ def generate_launch_description():
     }.items()
   )
 
-  start_sensor_scan_generation = IncludeLaunchDescription(
-    FrontendLaunchDescriptionSource(os.path.join(
-      get_package_share_directory('sensor_scan_generation'), 'launch', 'sensor_scan_generation.launch')
-    )
-  )
-
-  # start_loam_interface = IncludeLaunchDescription(
-  #   FrontendLaunchDescriptionSource(os.path.join(
-  #     get_package_share_directory('loam_interface'), 'launch', 'loam_interface.launch')
-  #   )
-  # )
 
   start_joy = Node(
     package='joy', 

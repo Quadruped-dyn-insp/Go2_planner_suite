@@ -41,22 +41,13 @@ find_package(PCL REQUIRED)
 find_package(pcl_conversions REQUIRED)
 find_package(pcl_ros REQUIRED)
 
-add_executable(vehicleSimulator src/vehicleSimulator.cpp)
-ament_target_dependencies(vehicleSimulator rclcpp std_msgs sensor_msgs nav_msgs geometry_msgs tf2 tf2_ros tf2_geometry_msgs message_filters pcl_ros pcl_conversions gazebo_ros gazebo_msgs)
-target_link_libraries(vehicleSimulator ${OpenCV_LIBRARIES} ${PCL_LIBRARIES})
-
-install(TARGETS
-  vehicleSimulator
-  DESTINATION lib/${PROJECT_NAME})
+# No executables in this package - only launch files and resources
 
 install(
   DIRECTORY
   launch
   log
-  mesh
   rviz
-  urdf
-  world
   DESTINATION share/${PROJECT_NAME}
 )
 

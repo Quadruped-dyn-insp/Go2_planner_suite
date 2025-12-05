@@ -82,6 +82,7 @@ WORKSPACES=(
 
 source "$WORKSPACE_ROOT/workspaces/pipeline_launcher/install/setup.sh"
 source "$WORKSPACE_ROOT/workspaces/dlio/install/setup.sh"
+source "$WORKSPACE_ROOT/workspaces/autonomous_exploration/install/setup.sh"
 for ws in "${WORKSPACES[@]}"; do
     ws_setup="$WORKSPACE_ROOT/workspaces/$ws/install/setup.bash"
     if [[ -f "$ws_setup" ]]; then
