@@ -36,19 +36,43 @@ Visualization Manager:
     - Class: rviz_common/Group
       Displays:
         - Class: rviz_default_plugins/TF
-          Enabled: false
+          Enabled: true
           Frame Timeout: 9999
           Frames:
             All Enabled: true
+            base_footprint:
+              Value: true
+            base_link:
+              Value: true
+            imu:
+              Value: true
+            livox_frame:
+              Value: true
+            map:
+              Value: true
+            map_o3d:
+              Value: true
+            odom_dlio:
+              Value: true
+            sensor:
+              Value: true
           Marker Scale: 5
           Name: tf tree
           Show Arrows: true
           Show Axes: true
           Show Names: true
           Tree:
-            {}
+            base_link:
+              base_footprint:
+                imu:
+                  {}
+                livox_frame:
+                  odom_dlio:
+                    {}
+                  sensor:
+                    {}
           Update Interval: 0
-          Value: false
+          Value: true
         - Class: rviz_default_plugins/Axes
           Enabled: true
           Length: 1
@@ -70,8 +94,8 @@ Visualization Manager:
         - Alpha: 1
           Autocompute Intensity Bounds: false
           Autocompute Value Bounds:
-            Max Value: 5.33551549911499
-            Min Value: -0.6164945960044861
+            Max Value: 10.538320541381836
+            Min Value: -2.026426315307617
             Value: true
           Axis: Z
           Channel Name: intensity

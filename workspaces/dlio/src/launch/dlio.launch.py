@@ -90,6 +90,6 @@ def generate_launch_description():
         declare_pointcloud_topic_arg,
         declare_imu_topic_arg,
         dlio_odom_node,
-        dlio_map_node,
+        # dlio_map_node,
         rviz_node
     ])
