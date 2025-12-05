@@ -65,8 +65,8 @@ def generate_launch_description() -> LaunchDescription:
             declare_verbose,
             # foxglove,
             # dlio,
-            open3d_slam,
-            vehicle_simulator,
+            # open3d_slam,
+            # vehicle_simulator,
             far_planner,
         ]
     )

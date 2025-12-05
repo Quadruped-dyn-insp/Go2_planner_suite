@@ -72,9 +72,9 @@ class TimingConfig:
 
     foxglove_bridge: float = 0.0
     dlio: float = 5.0
-    open3d_slam: float = 15.0
-    vehicle_simulator: float = 20.0
-    far_planner: float = 25.0
+    open3d_slam: float = 5.0
+    vehicle_simulator: float = 5.0
+    far_planner: float = 5.0
 
 
 # Default timing configuration

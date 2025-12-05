@@ -4,9 +4,9 @@
   <arg name="sensorOffsetY" default="0.0"/>
   <arg name="cameraOffsetZ" default="0.0"/>
   <arg name="twoWayDrive" default="true"/>
-  <arg name="maxSpeed" default="2.0"/>
+  <arg name="maxSpeed" default="0.4"/>
   <arg name="autonomyMode" default="true"/>
-  <arg name="autonomySpeed" default="2.0"/>
+  <arg name="autonomySpeed" default="0.4"/>
   <arg name="joyToSpeedDelay" default="2.0"/>
   <arg name="goalX" default="0.0"/>
   <arg name="goalY" default="0.0"/>
@@ -84,8 +84,8 @@
     <param name="joyToSpeedDelay" value="$(var joyToSpeedDelay)" />
   </node>
 
-  <node pkg="tf2_ros" exec="static_transform_publisher" name="vehicleTransPublisher" args="-$(var sensorOffsetX) -$(var sensorOffsetY) 0 0 0 0 /sensor /vehicle"/>
+  <node pkg="tf2_ros" exec="static_transform_publisher" name="vehicleTransPublisher" args="-$(var sensorOffsetX) -$(var sensorOffsetY) 0 0 0 0 /base_footprint /vehicle"/>
 
-  <node pkg="tf2_ros" exec="static_transform_publisher" name="sensorTransPublisher" args="0 0 $(var cameraOffsetZ) -1.5707963 0 -1.5707963 /sensor /camera"/>
+  <!-- <node pkg="tf2_ros" exec="static_transform_publisher" name="sensorTransPublisher" args="0 0 $(var cameraOffsetZ) -1.5707963 0 -1.5707963 /livox_frame /camera"/> -->
 
 </launch>

@@ -16,6 +16,7 @@ Usage:
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
+from launch_ros.actions import Node # <-- Import Node action
 
 from pipeline_launcher_lib.launch_utils import (
     create_dlio_launch,
@@ -44,7 +45,7 @@ def generate_launch_description() -> LaunchDescription:
 
     dlio = create_dlio_launch(
         delay=timing.dlio,
-        rviz="false",
+        rviz="true",
         pointcloud_topic=TOPICS_LIVOX.pointcloud,
         imu_topic=TOPICS_LIVOX.imu,
     )
@@ -60,13 +61,29 @@ def generate_launch_description() -> LaunchDescription:
 
     far_planner = create_far_planner_launch(delay=timing.far_planner)
 
+    # --- ADDED STATIC TRANSFORM PUBLISHER ---
+    # Defines base_footprint (child) 30cm lower (-0.3m on Z-axis) than base_link (parent).
+    static_tf_base = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='base_footprint_broadcaster',
+        arguments=[
+            '0', '0', '-0.3',   # X, Y, Z translation (50cm down)
+            '0', '0', '0',      # Yaw, Pitch, Roll rotation (no rotation)
+            'base_link',        # Parent Frame
+            'base_footprint'    # Child Frame
+        ]
+    )
+    # ----------------------------------------
+
     return LaunchDescription(
         [
             declare_verbose,
             # foxglove,
-            # dlio,
-            open3d_slam,
-            vehicle_simulator,
-            far_planner,
+            dlio,
+            static_tf_base, # <-- Static TF added here
+            # open3d_slam,
+            # vehicle_simulator,
+            # far_planner,
         ]
     )
