@@ -44,6 +44,7 @@ docs/build/
 
 # PLY files (large point cloud data) - exclude generated submaps
 workspaces/open3d_slam_ws/src/ros/open3d_slam_ros/data/*.ply
+*.pcd
 
 # CMake
 CMakeCache.txt

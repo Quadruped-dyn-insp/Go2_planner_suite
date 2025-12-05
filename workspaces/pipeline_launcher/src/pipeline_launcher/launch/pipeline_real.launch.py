@@ -78,7 +78,7 @@ def generate_launch_description() -> LaunchDescription:
             declare_dlio_rviz,
             declare_slam_rviz,
             # Launch actions (ordered by start time)
-            foxglove,  # T=0s
+            # foxglove,  # T=0s
             dlio,  # T=5s
             open3d_slam,  # T=15s
             vehicle_simulator,  # T=20s
