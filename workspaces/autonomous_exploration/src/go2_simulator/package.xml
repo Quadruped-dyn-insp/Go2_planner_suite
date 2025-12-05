@@ -1,7 +1,7 @@
 <package format="3">
-  <name>vehicle_simulator</name>
+  <name>go2_simulator</name>
   <version>0.0.1</version>
-  <description>Vehicle Simulator</description>
+  <description>Go2 Simulator</description>
   <maintainer email="zhangji@cmu.edu">Ji Zhang</maintainer>
   <license>BSD</license>
 
