@@ -22,7 +22,7 @@ from pipeline_launcher_lib.launch_utils import (
     create_far_planner_launch,
     create_foxglove_launch,
     create_open3d_slam_launch,
-    create_vehicle_simulator_launch,
+    create_go2_simulator_launch,
 )
 from pipeline_launcher_lib.config import QUICK_TIMING, TOPICS_DLIO_OUTPUT, TOPICS_LIVOX
 
@@ -56,7 +56,7 @@ def generate_launch_description() -> LaunchDescription:
         cloud_topic=TOPICS_DLIO_OUTPUT.pointcloud,
     )
 
-    vehicle_simulator = create_vehicle_simulator_launch(delay=timing.vehicle_simulator)
+    go2_simulator = create_go2_simulator_launch(delay=timing.go2_simulator)
 
     far_planner = create_far_planner_launch(delay=timing.far_planner)
 
@@ -66,7 +66,7 @@ def generate_launch_description() -> LaunchDescription:
             # foxglove,
             # dlio,
             open3d_slam,
-            vehicle_simulator,
+            go2_simulator,
             far_planner,
         ]
     )

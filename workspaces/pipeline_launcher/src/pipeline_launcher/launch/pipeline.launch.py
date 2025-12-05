@@ -9,13 +9,13 @@ def generate_launch_description():
     """
     Launch the complete pipeline with sequential delays:
     1. fast_lio mapping_mid360.launch.py (starts immediately)
-    2. vehicle_simulator system_real_robot.launch (after 3 seconds)
+    2. go2_simulator system_real_robot.launch (after 3 seconds)
     3. far_planner far_planner.launch (after 6 seconds total)
     """
     
     # Find package paths
     fast_lio_pkg = FindPackageShare('fast_lio')
-    vehicle_simulator_pkg = FindPackageShare('vehicle_simulator')
+    go2_simulator_pkg = FindPackageShare('go2_simulator')
     far_planner_pkg = FindPackageShare('far_planner')
     
     # Launch fast_lio mapping immediately (with RViz disabled)
@@ -28,13 +28,13 @@ def generate_launch_description():
         }.items()
     )
     
-    # Launch vehicle_simulator after 3 seconds
-    vehicle_simulator_launch = TimerAction(
+    # Launch go2_simulator after 3 seconds
+    go2_simulator_launch = TimerAction(
         period=3.0,
         actions=[
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([
-                    vehicle_simulator_pkg, '/launch/system_real_robot.launch'
+                    go2_simulator_pkg, '/launch/system_real_robot.launch'
                 ])
             )
         ]
@@ -50,7 +50,7 @@ def generate_launch_description():
         }.items()
     )
     
-    # Launch far_planner after 6 seconds total (3 more after vehicle_simulator)
+    # Launch far_planner after 6 seconds total (3 more after go2_simulator)
     far_planner_launch = TimerAction(
         period=6.0,
         actions=[
@@ -62,7 +62,7 @@ def generate_launch_description():
         ]
     )
 
-    # Launch open3d_slam mapping after 6 seconds total (3 more after vehicle_simulator)
+    # Launch open3d_slam mapping after 6 seconds total (3 more after go2_simulator)
     open3d_slam_launch = TimerAction(
         period=6.0,
         actions=[
@@ -88,7 +88,7 @@ def generate_launch_description():
     return LaunchDescription(env_actions + [
         # fast_lio_launch,
         dlio_launch,
-        # vehicle_simulator_launch,
+        # go2_simulator_launch,
         # far_planner_launch,
         open3d_slam_launch,
     ])

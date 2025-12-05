@@ -121,7 +121,7 @@ sleep 2  # Wait for nodes to initialize
 echo "Publishing static transforms..."
 ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 1 livox_frame sensor &
 ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 1 map_o3d map &
-ros2 run tf2_ros static_transform_publisher 0 0 -0.3 0 0 0 base_link base_footprint &
+ros2 run tf2_ros static_transform_publisher 0 0 0.3 0 0 0 base_footprint base_link &
 
 echo ""
 echo "Pipeline launched successfully. Press Ctrl+C to stop."

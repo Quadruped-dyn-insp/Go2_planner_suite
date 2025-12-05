@@ -10,7 +10,7 @@ Velodyne LiDAR sensors.
 Launch Sequence:
     1. Foxglove Bridge   (T=0s)  - Visualization bridge
     2. DLIO              (T=3s)  - LiDAR-Inertial Odometry
-    3. Vehicle Simulator (T=6s)  - Motion planning interface
+    3. Go2 Simulator     (T=6s)  - Motion planning interface
     4. Far Planner       (T=9s)  - Global path planning
     5. Open3D SLAM       (T=9s)  - 3D mapping
 
@@ -26,7 +26,7 @@ from pipeline_launcher_lib.launch_utils import (
     create_far_planner_launch,
     create_foxglove_launch,
     create_open3d_slam_launch,
-    create_vehicle_simulator_launch,
+    create_go2_simulator_launch,
 )
 from pipeline_launcher_lib.config import TOPICS_VELODYNE
 
@@ -57,7 +57,7 @@ def generate_launch_description() -> LaunchDescription:
         imu_topic=TOPICS_VELODYNE.imu,
     )
 
-    vehicle_simulator = create_vehicle_simulator_launch(delay=DELAY_VEHICLE)
+    go2_simulator = create_go2_simulator_launch(delay=DELAY_VEHICLE)
 
     far_planner = create_far_planner_launch(delay=DELAY_FAR_PLANNER)
 
@@ -73,7 +73,7 @@ def generate_launch_description() -> LaunchDescription:
             declare_use_sim_time,
             foxglove,
             dlio,
-            vehicle_simulator,
+            go2_simulator,
             far_planner,
             open3d_slam,
         ]

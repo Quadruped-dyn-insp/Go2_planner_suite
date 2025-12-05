@@ -18,7 +18,7 @@ from typing import Dict
 # =============================================================================
 PACKAGE_DLIO = "direct_lidar_inertial_odometry"
 PACKAGE_OPEN3D_SLAM = "open3d_slam_ros"
-PACKAGE_VEHICLE_SIMULATOR = "go2_simulator"
+PACKAGE_GO2_SIMULATOR = "go2_simulator"
 PACKAGE_FAR_PLANNER = "far_planner"
 PACKAGE_FOXGLOVE_BRIDGE = "foxglove_bridge"
 PACKAGE_FAST_LIO = "fast_lio"
@@ -29,7 +29,7 @@ PACKAGE_FAST_LIO = "fast_lio"
 # =============================================================================
 LAUNCH_DLIO = "/launch/dlio.launch.py"
 LAUNCH_OPEN3D_SLAM = "/launch/open3d_launch.py"
-LAUNCH_VEHICLE_SIMULATOR = "/launch/system_real_robot.launch"
+LAUNCH_GO2_SIMULATOR = "/launch/system_real_robot.launch"
 LAUNCH_FAR_PLANNER = "/launch/far_planner.launch"
 LAUNCH_FOXGLOVE_BRIDGE = "/launch/foxglove_bridge_launch.xml"
 LAUNCH_FAST_LIO = "/launch/mapping_mid360.launch.py"
@@ -73,7 +73,7 @@ class TimingConfig:
     foxglove_bridge: float = 0.0
     dlio: float = 5.0
     open3d_slam: float = 5.0
-    vehicle_simulator: float = 5.0
+    go2_simulator: float = 5.0
     far_planner: float = 5.0
 
 
@@ -85,7 +85,7 @@ QUICK_TIMING = TimingConfig(
     foxglove_bridge=0.0,
     dlio=1.0,
     open3d_slam=1.0,
-    vehicle_simulator=1.0,
+    go2_simulator=1.0,
     far_planner=1.0,
 )
 
