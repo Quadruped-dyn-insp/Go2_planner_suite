@@ -57,7 +57,7 @@ def generate_launch_description():
   		}]
   )
 
-  rviz_config_file = os.path.join(get_package_share_directory('vehicle_simulator'), 'rviz', 'vehicle_simulator.rviz')
+  rviz_config_file = os.path.join(get_package_share_directory('go2_simulator'), 'rviz', 'go2_simulator.rviz')
   start_rviz = Node(
     package='rviz2',
     executable='rviz2',

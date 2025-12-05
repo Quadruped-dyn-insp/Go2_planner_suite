@@ -18,7 +18,7 @@ from typing import Dict
 # =============================================================================
 PACKAGE_DLIO = "direct_lidar_inertial_odometry"
 PACKAGE_OPEN3D_SLAM = "open3d_slam_ros"
-PACKAGE_VEHICLE_SIMULATOR = "vehicle_simulator"
+PACKAGE_VEHICLE_SIMULATOR = "go2_simulator"
 PACKAGE_FAR_PLANNER = "far_planner"
 PACKAGE_FOXGLOVE_BRIDGE = "foxglove_bridge"
 PACKAGE_FAST_LIO = "fast_lio"

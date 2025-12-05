@@ -24,7 +24,7 @@
   <!-- Pipeline component dependencies -->
   <exec_depend>direct_lidar_inertial_odometry</exec_depend>
   <exec_depend>open3d_slam_ros</exec_depend>
-  <exec_depend>vehicle_simulator</exec_depend>
+  <exec_depend>go2_simulator</exec_depend>
   <exec_depend>far_planner</exec_depend>
   <exec_depend>foxglove_bridge</exec_depend>
 
