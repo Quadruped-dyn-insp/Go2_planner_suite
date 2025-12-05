@@ -16,7 +16,7 @@
     frames/odom: odom_dlio
     frames/baselink: base_link
     frames/lidar: livox_frame
-    frames/imu: imu
+    frames/imu: livox_imu
 
     map/waitUntilMove: true
     map/dense/filtered: false
