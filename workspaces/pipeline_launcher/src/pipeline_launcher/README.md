@@ -60,7 +60,7 @@ class TimingConfig:
     foxglove_bridge: float = 0.0
     dlio: float = 5.0
     open3d_slam: float = 15.0
-    vehicle_simulator: float = 20.0
+    go2_simulator: float = 20.0
     far_planner: float = 25.0
 ```
 
@@ -86,7 +86,7 @@ TOPICS_VELODYNE = TopicConfig(
 
 - `direct_lidar_inertial_odometry` - DLIO
 - `open3d_slam_ros` - Open3D SLAM
-- `vehicle_simulator` - Motion planning interface
+- `go2_simulator` - Motion planning interface
 - `far_planner` - Global path planner
 - `foxglove_bridge` - Visualization bridge
 

@@ -12,7 +12,7 @@ Launch Sequence:
     1. Foxglove Bridge   (T=0s)  - Visualization bridge
     2. DLIO              (T=5s)  - LiDAR-Inertial Odometry
     3. Open3D SLAM       (T=15s) - 3D mapping
-    4. Vehicle Simulator (T=20s) - Motion planning interface
+    4. Go2 Simulator     (T=20s) - Motion planning interface
     5. Far Planner       (T=25s) - Global path planning
 
 Usage:
@@ -29,7 +29,7 @@ from pipeline_launcher_lib.launch_utils import (
     create_far_planner_launch,
     create_foxglove_launch,
     create_open3d_slam_launch,
-    create_vehicle_simulator_launch,
+    create_go2_simulator_launch,
 )
 from pipeline_launcher_lib.config import DEFAULT_TIMING, TOPICS_DLIO_OUTPUT, TOPICS_LIVOX
 
@@ -68,7 +68,7 @@ def generate_launch_description() -> LaunchDescription:
         cloud_topic=TOPICS_DLIO_OUTPUT.pointcloud,
     )
 
-    vehicle_simulator = create_vehicle_simulator_launch(delay=timing.vehicle_simulator)
+    go2_simulator = create_go2_simulator_launch(delay=timing.go2_simulator)
 
     far_planner = create_far_planner_launch(delay=timing.far_planner)
 
@@ -81,7 +81,7 @@ def generate_launch_description() -> LaunchDescription:
             # foxglove,  # T=0s
             dlio,  # T=5s
             open3d_slam,  # T=15s
-            vehicle_simulator,  # T=20s
+            go2_simulator,  # T=20s
             far_planner,  # T=25s
         ]
     )
