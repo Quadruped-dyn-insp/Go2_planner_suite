@@ -31,9 +31,9 @@ Visualization Manager:
     - Class: rviz_default_plugins/Axes
       Enabled: true
       Length: 1.5
-      Name: Vehicle
+      Name: Base_link
       Radius: 0.20000000298023224
-      Reference Frame: vehicle
+      Reference Frame: base_link
       Value: true
     - Class: rviz_default_plugins/Image
       Enabled: true
