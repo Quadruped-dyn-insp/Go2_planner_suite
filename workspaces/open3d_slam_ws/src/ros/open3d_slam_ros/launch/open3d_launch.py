@@ -81,8 +81,8 @@ def generate_launch_description():
         respawn=True,
         respawn_delay=0.0,
         remappings=[
-            ("/open3d/scan2map_odometry", "/state_estimation_open3d"),
-            ("/open3d/assembled_map", "/registered_scan"),
+            ("/open3d/scan2map_odometry", "/state_estimation_o3d"),
+            ("/open3d/assembled_map", "/registered_scan_o3d"),
         ],
     )
 

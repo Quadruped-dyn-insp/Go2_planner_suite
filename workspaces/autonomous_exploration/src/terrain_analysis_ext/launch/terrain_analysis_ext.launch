@@ -16,7 +16,7 @@
     <param name="disRatioZ" value="0.1" />
     <param name="checkTerrainConn" value="$(var checkTerrainConn)" />
     <param name="terrainConnThre" value="0.3" />         <!-- Changed from 0.5 -->
-    <param name="terrainUnderVehicle" value="-0.1" />    <!-- Changed from -0.75 -->
+    <param name="terrainUnderVehicle" value="0.01" />    <!-- Changed from -0.75 -->
     <param name="ceilingFilteringThre" value="1.0" />    <!-- Changed from 2.0, adjust for your environment -->
     <param name="localTerrainMapRadius" value="4.0" />
   </node>
