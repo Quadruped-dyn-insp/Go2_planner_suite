@@ -81,7 +81,7 @@ def generate_launch_description() -> LaunchDescription:
             # Launch actions (ordered by start time)
             foxglove,  # T=0s
             dlio,  # T=5s
-            open3d_slam,  # T=15s
+            # open3d_slam,  # T=15s
             go2_simulator,  # T=20s
             far_planner,  # T=25s
         ]

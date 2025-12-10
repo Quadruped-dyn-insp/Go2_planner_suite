@@ -58,7 +58,7 @@ def generate_launch_description():
             ('path', 'dlio/odom_node/path'),
             ('kf_pose', 'dlio/odom_node/keyframes'),
             ('kf_cloud', 'dlio/odom_node/pointcloud/keyframe'),
-            ('deskewed', 'dlio_registered_scan'),
+            ('deskewed', 'registered_scan'),
         ],
     )
 

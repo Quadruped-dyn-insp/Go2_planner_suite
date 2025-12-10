@@ -13,7 +13,7 @@
 /**:
   ros__parameters:
     use_sim_time: true
-    frames/odom: odom_dlio
+    frames/odom: map
     frames/baselink: base_link
     frames/lidar: livox_frame
     frames/imu: livox_imu

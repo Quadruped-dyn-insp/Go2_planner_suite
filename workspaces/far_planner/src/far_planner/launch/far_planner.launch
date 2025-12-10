@@ -31,7 +31,7 @@ def generate_launch_description():
                 ('/odom_world', '/state_estimation'),
                 ('/terrain_cloud', '/terrain_map_ext'),
                 ('/scan_cloud', '/terrain_map'),
-                ('/terrain_local_cloud', '/registered_scan_dlio')
+                ('/terrain_local_cloud', '/registered_scan')
             ]
         ),
         
