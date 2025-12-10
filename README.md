@@ -60,6 +60,10 @@ LiDAR + IMU  ──►  DLIO  ──►  Open3D SLAM  ──►  Terrain Analysi
 
 ### TF Tree
 
+<p align="center">
+  <img src="docs/images/tf_tree.png" alt="TF Tree" width="800" />
+</p>
+
 ```
 map
  └── odom
