@@ -61,7 +61,7 @@ TOPICS_VELODYNE = TopicConfig(
 )
 
 TOPICS_DLIO_OUTPUT = TopicConfig(
-    pointcloud="/dlio_registered_scan",
+    pointcloud="/registered_scan",
     imu="/livox/imu",
     odometry="/state_estimation",
 )

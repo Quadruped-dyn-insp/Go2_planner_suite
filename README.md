@@ -39,15 +39,29 @@ This repository contains a complete autonomous navigation stack for the **Unitre
 ### Data Flow
 
 ```
-LiDAR + IMU  -->  DLIO  -->  Open3D SLAM  -->  Terrain Analyzer  -->  Far Planner  -->  Local Planner  -->  Go2 Robot
-                   |                                  |
-              Odometry                         Terrain Map Ext
+LiDAR + IMU  ──►  DLIO  ──►  Open3D SLAM  ──►  Terrain Analysis  ──►  Far Planner  ──►  Local Planner  ──►  Go2 Robot
+                   │              │                   │
+              /odom_dlio    /state_estimation    /terrain_map
+                                                      │
+                                               Terrain Analysis Ext
+                                                      │
+                                               /terrain_map_ext
 ```
+
+### Key Topics
+
+| Topic | Source | Description |
+|-------|--------|-------------|
+| `/odom_dlio` | DLIO | LiDAR-inertial odometry |
+| `/state_estimation` | Open3D SLAM | Fused localization |
+| `/registered_scan` | Open3D SLAM | Registered point cloud in map frame |
+| `/terrain_map` | Terrain Analysis | Local traversability (near-field) |
+| `/terrain_map_ext` | Terrain Analysis Ext | Extended traversability (far-field) |
 
 ### TF Tree
 
 <p align="center">
-  <img src="docs/images/tf_tree.png" alt="TF Tree" width="900" />
+  <img src="docs/images/tf_tree.png" alt="TF Tree" width="800" />
 </p>
 
 ---
@@ -59,8 +73,47 @@ LiDAR + IMU  -->  DLIO  -->  Open3D SLAM  -->  Terrain Analyzer  -->  Far Planne
 | **DLIO** | LiDAR-Inertial Odometry | CUDA (GICP) |
 | **Far Planner** | Global path planning | CUDA (Visibility Graph) |
 | **Boundary Handler** | Obstacle boundary processing | CUDA |
-| **Terrain Analysis** | Traversability mapping | CPU + OpenMP |
+| **Terrain Analysis** | Local traversability (4m radius) | CPU + OpenMP |
+| **Terrain Analysis Ext** | Extended traversability (40m radius) | CPU + OpenMP |
 | **Local Planner** | Reactive navigation | CPU |
+
+---
+
+## Terrain Analysis Tuning
+
+The terrain analysis nodes require tuning based on your robot's physical dimensions.
+
+### Robot Parameters
+
+| Parameter | terrain_analysis | terrain_analysis_ext | Description |
+|-----------|------------------|---------------------|-------------|
+| `vehicleHeight` | 0.4 | 0.4 | Robot height (m) - obstacles within this height are marked |
+| `minRelZ` / `lowerBoundZ` | -0.5 | -0.5 | Min Z below base_link to consider |
+| `maxRelZ` / `upperBoundZ` | 1.0 | 1.0 | Max Z above base_link to consider |
+| `terrainUnderVehicle` | N/A | -0.1 | Assumed ground level when no data (base_link on floor = small negative) |
+| `terrainConnThre` | N/A | 0.3 | Max elevation change for connected terrain |
+
+### Tuning for Different Robots
+
+**For a robot with base_link on the floor:**
+```xml
+<!-- terrain_analysis.launch -->
+<param name="vehicleHeight" value="YOUR_ROBOT_HEIGHT" />
+<param name="minRelZ" value="-0.5" />  <!-- Captures slight slopes -->
+
+<!-- terrain_analysis_ext.launch -->
+<param name="terrainUnderVehicle" value="-0.1" />  <!-- Small margin below floor -->
+```
+
+**For a robot with base_link elevated (e.g., at center of mass):**
+```xml
+<!-- terrain_analysis.launch -->
+<param name="vehicleHeight" value="YOUR_ROBOT_HEIGHT" />
+<param name="minRelZ" value="-BASE_LINK_HEIGHT - 0.5" />  <!-- Goes below ground level -->
+
+<!-- terrain_analysis_ext.launch -->
+<param name="terrainUnderVehicle" value="-BASE_LINK_HEIGHT - 0.1" />
+```
 
 ---
 
@@ -157,25 +210,27 @@ __device__ bool doIntersect_GPU(...);
 Go2_planner_suite/
 ├── scripts/
 │   ├── build.sh              # Build all workspaces
+│   ├── setup.sh              # Environment setup
 │   ├── launch.sh             # Launch real robot
 │   └── sim.sh                # Launch simulation
 ├── config/                   # Global configuration
 ├── docs/
 │   ├── images/               # Documentation images
 │   └── setup/                # Setup guides
+├── tools/                    # Utility scripts and debugging tools
 └── workspaces/
-    ├── autonomous_exploration/       # Mid-layer framework
-    │   ├── local_planner/           # Reactive navigation
-    │   ├── terrain_analysis/        # Traversability
-    │   ├── loam_interface/          # Odometry bridge
-    │   └── vehicle_simulator/       # Gazebo simulation
-    ├── dlio/                        # CUDA-accelerated odometry
+    ├── autonomous_exploration/       # Mid-layer navigation framework
+    │   ├── local_planner/           # Reactive obstacle avoidance
+    │   ├── terrain_analysis/        # Local traversability mapping (near-field)
+    │   ├── terrain_analysis_ext/    # Extended traversability mapping (far-field)
+    │   └── go2_simulator/           # Gazebo simulation for Go2
+    ├── dlio/                        # CUDA-accelerated LiDAR-Inertial odometry
     │   └── src/nano_gicp/cuda/      # GICP CUDA kernels
-    ├── far_planner/                 # CUDA-accelerated planner
-    │   ├── far_planner/             # Core planner + CUDA
-    │   └── boundary_handler/        # Boundary CUDA kernels
-    ├── open3d_slam_ws/              # Dense mapping
-    └── pipeline_launcher/           # System orchestration
+    ├── far_planner/                 # CUDA-accelerated global planner
+    │   ├── far_planner/             # Core visibility graph planner + CUDA
+    │   └── boundary_handler/        # Obstacle boundary CUDA kernels
+    ├── open3d_slam_ws/              # Open3D SLAM for dense mapping
+    └── pipeline_launcher/           # System orchestration & launch management
 ```
 
 ---
