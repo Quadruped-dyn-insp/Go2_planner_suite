@@ -686,8 +686,12 @@ void FARMaster::OdomCallBack(const nav_msgs::msg::Odometry::SharedPtr msg) {
     // system start time
     FARUtil::systemStartTime = nh_->now().seconds();
     FARUtil::map_origin = robot_pos_;
-    map_handler_.UpdateRobotPosition(robot_pos_);
   }
+  
+  // Update map handler with current robot position every time odometry is received
+  map_handler_.UpdateRobotPosition(robot_pos_);
+  graph_manager_.UpdateRobotPosition(robot_pos_);
+  FARUtil::free_odom_p = robot_pos_;
 
   is_odom_init_ = true;
 }

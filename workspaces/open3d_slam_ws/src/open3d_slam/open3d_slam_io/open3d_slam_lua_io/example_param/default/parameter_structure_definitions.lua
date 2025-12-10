@@ -133,7 +133,7 @@ POSE = {
 
 MAP_INITIALIZER_PARAMETERS = {
   is_initialize_interactively = false,
-  frame_id = "map_o3d",
+  frame_id = "map",
   pcd_file_path = "",
   init_pose = POSE,
 }

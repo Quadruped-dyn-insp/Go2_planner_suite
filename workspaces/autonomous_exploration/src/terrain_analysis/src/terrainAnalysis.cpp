@@ -55,7 +55,7 @@ bool noDataObstacle = false;
 int noDataBlockSkipNum = 0;
 int minBlockPointNum = 10;
 double vehicleHeight = 1.5;
-int voxelPointUpdateThre = 100;
+int voxelPointUpdateThre = 10;
 double voxelTimeUpdateThre = 2.0;
 double minRelZ = -1.5;
 double maxRelZ = 0.2;
@@ -271,7 +271,7 @@ int main(int argc, char **argv) {
 
   downSizeFilter.setLeafSize(scanVoxelSize, scanVoxelSize, scanVoxelSize);
 
-  rclcpp::Rate rate(100);
+  rclcpp::Rate rate(10);
   bool status = rclcpp::ok();
   while (status) {
     rclcpp::spin_some(nh);

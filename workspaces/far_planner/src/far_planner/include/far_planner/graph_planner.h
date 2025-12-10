@@ -137,6 +137,25 @@ inline void GoalReset() {
     goal_node_ptr_ = NULL;
 }
 
+/**
+ * @brief Update the start of the path to the current odom node position
+ * This ensures the global plan always starts from the robot's current position
+ * @param path The path to update
+ */
+inline void UpdatePathStartWithOdom(NodePtrStack& path) {
+    if (path.empty() || odom_node_ptr_ == NULL) return;
+    // Ensure the path starts with the current odom node
+    if (path.front() != odom_node_ptr_) {
+        // Remove old start node if it was the previous odom node (is_odom flag)
+        if (path.front()->is_odom) {
+            path.erase(path.begin());
+        }
+        // Insert current odom node at the beginning
+        path.insert(path.begin(), odom_node_ptr_);
+    }
+}
+
+
 public:
 
 GraphPlanner() = default;
