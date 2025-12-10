@@ -147,12 +147,14 @@ def create_open3d_slam_launch(
     use_sim_time: str = "false",
     launch_rviz: str = "false",
     cloud_topic: str = config.TOPICS_DLIO_OUTPUT.pointcloud,
+    odometry_topic: str = config.TOPICS_DLIO_OUTPUT.odometry,
 ) -> TimerAction:
     """Create Open3D SLAM launch action."""
     args = config.Open3dSlamArgs(
         use_sim_time=use_sim_time,
         launch_rviz=launch_rviz,
         cloud_topic=cloud_topic,
+        odometry_topic=odometry_topic,
     )
 
     return create_timed_launch(

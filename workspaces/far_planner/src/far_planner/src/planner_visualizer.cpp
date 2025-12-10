@@ -66,6 +66,8 @@ void DPVisualizer::VizPath(const NodePtrStack& global_path, const bool& is_free_
     path_marker.type = Marker::LINE_STRIP;
     const VizColor color = is_free_nav ? VizColor::GREEN : VizColor::BLUE;
     this->SetMarker(nh_, color, "global_path", 0.75f, 0.9f, path_marker);
+    // Ensure path is published in map frame for consistency
+    path_marker.header.frame_id = "map";
     geometry_msgs::msg::Point geo_p;
     for (const auto& node_ptr : global_path) {
         geo_p = FARUtil::Point3DToGeoMsgPoint(node_ptr->position);

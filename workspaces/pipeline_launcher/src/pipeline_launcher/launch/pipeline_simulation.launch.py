@@ -71,7 +71,7 @@ def generate_launch_description() -> LaunchDescription:
     return LaunchDescription(
         [
             declare_use_sim_time,
-            foxglove,
+            # foxglove,
             dlio,
             go2_simulator,
             far_planner,

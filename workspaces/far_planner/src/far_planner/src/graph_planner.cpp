@@ -202,6 +202,7 @@ bool GraphPlanner::PathToGoal(const NavNodePtr& goal_ptr,
             if (cur_waypoint_dist > gp_params_.adjust_radius) {
                 if ((odom_node_ptr_->position - last_planning_odom_).norm() < gp_params_.momentum_dist) { // movement momentum
                     global_path = recorded_path_;
+                    this->UpdatePathStartWithOdom(global_path);  // Ensure path starts from current robot position
                     _nav_node_ptr = this->NextNavWaypointFromPath(global_path, goal_ptr);
                     path_momentum_counter_ ++;
                     if (FARUtil::IsDebug) RCLCPP_INFO_STREAM(nh_->get_logger(), "Momentum path counter: " << path_momentum_counter_ << " Over max: "<< gp_params_.momentum_thred);
@@ -218,6 +219,7 @@ bool GraphPlanner::PathToGoal(const NavNodePtr& goal_ptr,
                     const float heading_dot = (next_waypoint_ - last_planning_odom_).norm_dot(_nav_node_ptr->position - odom_node_ptr_->position);
                     if (heading_dot < 0.0f) { // consistant heading momentum
                         global_path = recorded_path_;
+                        this->UpdatePathStartWithOdom(global_path);  // Ensure path starts from current robot position
                         _nav_node_ptr = this->NextNavWaypointFromPath(global_path, goal_ptr);
                         path_momentum_counter_ ++;
                         if (FARUtil::IsDebug) RCLCPP_INFO_STREAM(nh_->get_logger(), "Momentum path counter: " << path_momentum_counter_ << "; Over max: "<< gp_params_.momentum_thred);
@@ -233,6 +235,7 @@ bool GraphPlanner::PathToGoal(const NavNodePtr& goal_ptr,
     } else { // no valid path found
         if (is_global_path_init_ && path_momentum_counter_ < gp_params_.momentum_thred) { // momentum go forward
             global_path = recorded_path_;
+            this->UpdatePathStartWithOdom(global_path);  // Ensure path starts from current robot position
             _nav_node_ptr = this->NextNavWaypointFromPath(global_path, goal_ptr);
             path_momentum_counter_ ++;
             if (FARUtil::IsDebug) RCLCPP_INFO_STREAM(nh_->get_logger(), "Momentum path counter: " << path_momentum_counter_ << "; Over max: "<< gp_params_.momentum_thred);
@@ -242,6 +245,7 @@ bool GraphPlanner::PathToGoal(const NavNodePtr& goal_ptr,
                 if (FARUtil::IsDebug) RCLCPP_WARN(nh_->get_logger(), "GP: free navigation fails, auto swiching to attemptable navigation...");
                 if (is_global_path_init_) {
                     global_path = recorded_path_;
+                    this->UpdatePathStartWithOdom(global_path);  // Ensure path starts from current robot position
                     _nav_node_ptr = this->NextNavWaypointFromPath(global_path, goal_ptr);
                 } else {
                     _nav_node_ptr = goal_ptr;
@@ -272,12 +276,14 @@ bool GraphPlanner::ReconstructPath(const NavNodePtr& goal_node_ptr,
     global_path.clear();
     NavNodePtr check_ptr = goal_node_ptr;
     global_path.push_back(check_ptr);
+    NavNodePtr last_parent_ptr = NULL;
     if (is_free_nav) {
         while (true) {
             const NavNodePtr parent_ptr = check_ptr->free_parent;
             if (parent_ptr->free_direct != NodeFreeDirect::CONCAVE) {
                 global_path.push_back(parent_ptr);
             }
+            last_parent_ptr = parent_ptr;
             if (parent_ptr->free_parent == NULL) break;
             check_ptr = parent_ptr;
         }
@@ -287,11 +293,21 @@ bool GraphPlanner::ReconstructPath(const NavNodePtr& goal_node_ptr,
             if (parent_ptr->free_direct != NodeFreeDirect::CONCAVE) {
                 global_path.push_back(parent_ptr);
             }
+            last_parent_ptr = parent_ptr;
             if (parent_ptr->parent == NULL) break;
             check_ptr = parent_ptr;
         } 
     }
-    std::reverse(global_path.begin(), global_path.end()); 
+    std::reverse(global_path.begin(), global_path.end());
+    
+    // Ensure the odom node (robot's current position) is always at the start of the path
+    // This fixes the issue where the path start position wasn't moving with the robot
+    if (odom_node_ptr_ != NULL && !global_path.empty() && global_path.front() != odom_node_ptr_) {
+        // If the first node is not the odom node, insert it at the beginning
+        // This can happen if odom node was skipped due to CONCAVE free_direct
+        global_path.insert(global_path.begin(), odom_node_ptr_);
+    }
+    
     return true;
 }
 

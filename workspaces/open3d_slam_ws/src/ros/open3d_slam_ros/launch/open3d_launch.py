@@ -26,7 +26,7 @@ def generate_launch_description():
         DeclareLaunchArgument('launch_prefix', default_value='', description='gdb -ex run --args'),
         DeclareLaunchArgument('launch_rviz', default_value='true'),
         DeclareLaunchArgument('cloud_topic', default_value='/livox/lidar'), #/dlio/odom_node/pointcloud/deskewed #'/pointcloud #/rslidar/points
-        DeclareLaunchArgument('odometry_topic', default_value='/odom_dlio'), #/graph_msf/est_odometry_odom_imu /dlio/odom_node/odom
+        DeclareLaunchArgument('odometry_topic', default_value='/state_estimation'), #/graph_msf/est_odometry_odom_imu /dlio/odom_node/odom
         DeclareLaunchArgument('assumed_external_odometry_tracked_frame', default_value='livox_frame'), #imu_link #base_link
         DeclareLaunchArgument('parameter_filename', default_value='param_summer_school.lua'),
         DeclareLaunchArgument('pose_stamped_topic', default_value='no_pose_stamped_topic'),
@@ -81,8 +81,8 @@ def generate_launch_description():
         respawn=True,
         respawn_delay=0.0,
         remappings=[
-            ('/open3d/scan2map_odometry', '/state_estimation'),
-            ('/open3d/assembled_map', '/registered_scan'),
+            ("/open3d/scan2map_odometry", "/state_estimation_open3d"),
+            ("/open3d/assembled_map", "/registered_scan"),
         ],
     )
 

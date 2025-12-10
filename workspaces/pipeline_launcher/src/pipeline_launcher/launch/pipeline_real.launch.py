@@ -56,7 +56,7 @@ def generate_launch_description() -> LaunchDescription:
 
     dlio = create_dlio_launch(
         delay=timing.dlio,
-        rviz="true",
+        rviz="false",
         pointcloud_topic=TOPICS_LIVOX.pointcloud,
         imu_topic=TOPICS_LIVOX.imu,
     )
@@ -66,6 +66,7 @@ def generate_launch_description() -> LaunchDescription:
         use_sim_time="false",
         launch_rviz="false",
         cloud_topic=TOPICS_DLIO_OUTPUT.pointcloud,
+        odometry_topic=TOPICS_DLIO_OUTPUT.odometry,
     )
 
     go2_simulator = create_go2_simulator_launch(delay=timing.go2_simulator)
@@ -78,7 +79,7 @@ def generate_launch_description() -> LaunchDescription:
             declare_dlio_rviz,
             declare_slam_rviz,
             # Launch actions (ordered by start time)
-            # foxglove,  # T=0s
+            foxglove,  # T=0s
             dlio,  # T=5s
             open3d_slam,  # T=15s
             go2_simulator,  # T=20s

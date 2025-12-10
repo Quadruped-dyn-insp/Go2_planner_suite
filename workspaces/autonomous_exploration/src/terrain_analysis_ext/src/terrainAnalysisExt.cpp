@@ -43,7 +43,7 @@ bool clearingCloud = false;
 bool useSorting = false;
 double quantileZ = 0.25;
 double vehicleHeight = 1.5;
-int voxelPointUpdateThre = 100;
+int voxelPointUpdateThre = 10;
 double voxelTimeUpdateThre = 2.0;
 double lowerBoundZ = -1.5;
 double upperBoundZ = 1.0;
@@ -214,7 +214,7 @@ int main(int argc, char** argv)
   nh->get_parameter("ceilingFilteringThre", ceilingFilteringThre);
   nh->get_parameter("localTerrainMapRadius", localTerrainMapRadius);
 
-  auto subOdometry = nh->create_subscription<nav_msgs::msg::Odometry>("/odom_dlio", 5, odometryHandler);
+  auto subOdometry = nh->create_subscription<nav_msgs::msg::Odometry>("/state_estimation", 5, odometryHandler);
 
   auto subLaserCloud = nh->create_subscription<sensor_msgs::msg::PointCloud2>("/registered_scan", 5, laserCloudHandler);
 
@@ -236,7 +236,7 @@ int main(int argc, char** argv)
   std::vector<int> pointIdxNKNSearch;
   std::vector<float> pointNKNSquaredDistance;
 
-  rclcpp::Rate rate(100);
+  rclcpp::Rate rate(10);
   bool status = rclcpp::ok();
   while (status)
   {

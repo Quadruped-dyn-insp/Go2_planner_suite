@@ -220,7 +220,7 @@ if (!slam_->isUseExistingMapEnabled() && slam_->isUsingOdometryTopic()) {
   Eigen::Quaterniond rotation(calculatedTransform.rotation());
 
   poseStamped.header.stamp = toRos(std::get<1>(cloudTimePair));
-  poseStamped.header.frame_id = "map_o3d";
+  poseStamped.header.frame_id = "map";
   poseStamped.pose.position.x = calculatedTransform.translation().x();
   poseStamped.pose.position.y = calculatedTransform.translation().y();
   poseStamped.pose.position.z = calculatedTransform.translation().z();
@@ -246,7 +246,7 @@ if (!slam_->isUseExistingMapEnabled() && slam_->isUsingOdometryTopic()) {
 
   // Until we identify the time issue with best guess use cloud time. These are supposed to be same since they are paired.
   bestGuessPoseStamped.header.stamp = toRos(std::get<0>(bestGuessTimePair));
-  bestGuessPoseStamped.header.frame_id = "map_o3d";
+  bestGuessPoseStamped.header.frame_id = "map";
   bestGuessPoseStamped.pose.position.x = bestGuessTransform.translation().x();
   bestGuessPoseStamped.pose.position.y = bestGuessTransform.translation().y();
   bestGuessPoseStamped.pose.position.z = bestGuessTransform.translation().z();

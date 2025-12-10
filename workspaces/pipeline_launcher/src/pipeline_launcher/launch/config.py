@@ -44,22 +44,26 @@ class TopicConfig:
 
     pointcloud: str
     imu: str
+    odometry: str = ""  # Optional odometry topic
 
 
 # Predefined topic configurations
 TOPICS_LIVOX = TopicConfig(
     pointcloud="/livox/lidar",
     imu="/livox/imu",
+    odometry="",
 )
 
 TOPICS_VELODYNE = TopicConfig(
     pointcloud="/velodyne_points",
     imu="/imu/data",
+    odometry="",
 )
 
 TOPICS_DLIO_OUTPUT = TopicConfig(
     pointcloud="/dlio_registered_scan",
     imu="/livox/imu",
+    odometry="/state_estimation",
 )
 
 
@@ -117,6 +121,7 @@ class Open3dSlamArgs:
     use_sim_time: str = "false"
     launch_rviz: str = "false"
     cloud_topic: str = TOPICS_DLIO_OUTPUT.pointcloud
+    odometry_topic: str = TOPICS_DLIO_OUTPUT.odometry
 
     def to_dict(self) -> Dict[str, str]:
         """Convert to launch arguments dictionary."""
@@ -124,6 +129,7 @@ class Open3dSlamArgs:
             "use_sim_time": self.use_sim_time,
             "launch_rviz": self.launch_rviz,
             "cloud_topic": self.cloud_topic,
+            "odometry_topic": self.odometry_topic,
         }
 
 

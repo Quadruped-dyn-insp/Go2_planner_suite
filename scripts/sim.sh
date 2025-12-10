@@ -103,6 +103,7 @@ WORKSPACES=(
 
 source "$WORKSPACE_ROOT/workspaces/pipeline_launcher/install/setup.sh"
 source "$WORKSPACE_ROOT/workspaces/dlio/install/setup.sh"
+source "$WORKSPACE_ROOT/workspaces/autonomous_exploration/install/setup.sh"
 for ws in "${WORKSPACES[@]}"; do
     ws_setup="$WORKSPACE_ROOT/workspaces/$ws/install/setup.bash"
     if [[ -f "$ws_setup" ]]; then
@@ -174,7 +175,7 @@ PIPELINE_PID=$!
 sleep 3
 
 echo "Publishing static transforms..."
-ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 1 livox_frame sensor &
+# ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 1 livox_frame sensor &
 ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 1 map_o3d map &
 
 echo ""
