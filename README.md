@@ -64,14 +64,6 @@ LiDAR + IMU  ──►  DLIO  ──►  Open3D SLAM  ──►  Terrain Analysi
   <img src="docs/images/tf_tree.png" alt="TF Tree" width="800" />
 </p>
 
-```
-map
- └── odom
-      └── base_link
-           └── base_footprint
-           └── sensor (LiDAR frame)
-```
-
 ---
 
 ## Features
