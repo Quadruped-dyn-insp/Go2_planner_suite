@@ -26,11 +26,14 @@ set -e  # Exit on any error
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKSPACE_ROOT="$(dirname "$SCRIPT_DIR")"
 
+# CycloneDDS Configuration
+export CYCLONEDDS_URI="file://${SCRIPT_DIR}/cyclonedds.xml"
+
 # Default values
-WORLD_FILE="/home/yasiru/world.world"
+WORLD_FILE="/home/yasiru/factory.world"
 GAZEBO_WAIT_TIME=15
 SKIP_GAZEBO=false
-LAUNCH_FILE="pipeline_simulation.launch.py"
+LAUNCH_FILE="pipeline_real.launch.py"
 
 # Process IDs for cleanup
 GAZEBO_PID=""
@@ -76,10 +79,25 @@ done
 cleanup() {
     echo ""
     echo "Shutting down..."
+    # Kill the parent launch processes first
     [[ -n "$PIPELINE_PID" ]] && kill $PIPELINE_PID 2>/dev/null || true
     [[ -n "$GAZEBO_PID" ]] && kill $GAZEBO_PID 2>/dev/null || true
-    # Kill any remaining background jobs
+    
+    echo "Killing lingering ROS nodes..."
+    # Force kill known heavy nodes that tend to stick around
+    pkill -f "terrainAnalysis" || true
+    pkill -f "terrainAnalysisExt" || true
+    pkill -f "far_planner" || true
+    pkill -f "dlio_odom_node" || true
+    pkill -f "dlio_map_node" || true
+    pkill -f "open3d_slam" || true
+    pkill -f "go2_driver_node" || true
+    pkill -f "foxglove_bridge" || true
+    pkill -f "rviz2" || true
+    
+    # Kill any remaining background jobs of this script
     jobs -p | xargs -r kill 2>/dev/null || true
+    
     echo "Cleanup complete."
     exit 0
 }
@@ -98,12 +116,14 @@ WORKSPACES=(
     "dlio"
     "open3d_slam_ws"
     "pipeline_launcher"
+    "unitree_sim_ws"
 )
 
 
 source "$WORKSPACE_ROOT/workspaces/pipeline_launcher/install/setup.sh"
 source "$WORKSPACE_ROOT/workspaces/dlio/install/setup.sh"
 source "$WORKSPACE_ROOT/workspaces/autonomous_exploration/install/setup.sh"
+source "$WORKSPACE_ROOT/workspaces/unitree_sim_ws/install/setup.sh"
 for ws in "${WORKSPACES[@]}"; do
     ws_setup="$WORKSPACE_ROOT/workspaces/$ws/install/setup.bash"
     if [[ -f "$ws_setup" ]]; then
@@ -175,8 +195,8 @@ PIPELINE_PID=$!
 sleep 3
 
 echo "Publishing static transforms..."
-# ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 1 livox_frame sensor &
-ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 1 map_o3d map &
+ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 1 odom_dlio map&
+ros2 run tf2_ros static_transform_publisher 0 0 0.25 0 0 0 base_footprint base_link &
 
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

@@ -1,0 +1,21 @@
+{
+  "name": "mcap-finder",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^7.3.1"
+  },
+  "dependencies": {
+    "@mcap/browser": "^1.0.1",
+    "@mcap/core": "^2.1.7"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

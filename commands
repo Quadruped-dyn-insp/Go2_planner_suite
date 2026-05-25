@@ -18,3 +18,369 @@ pkill -9 -f ros2
 pkill -9 -f gazebo
 pkill -9 -f gzserver
 pkill -9 -f gzclient
+
+
+ros2 run voxel_grid_filter voxel_node --ros-args -p 
+voxel_size:=0.5
+
+source /opt/ros/humble/setup.bash && python3 server.py
+
+ npm run dev -- --host
+
+export MOLA_LO_PUBLISH_DESKEWED_SCANS=true
+cd ~/ros2_mola_ws/
+source install/setup.bash 
+ros2 launch mola_lidar_odometry ros2-lidar-odometry.launch.py   start_active:=False   publish_localization_following_rep105:=False   start_mapping_enabled:=False   lidar_topic_name:="/livox/lidar"   imu_topic_name:="/livox/imu"   mola_tf_base_link:="base_link"   mola_deskew_method:="MotionCompensationMethod::IMU"   mola_initial_map_mm_file:=$(pwd)/myMap.mm
+
+export MOLA_LO_PUBLISH_DESKEWED_SCANS=true
+source install/setup.bash 
+ros2 launch mola_lidar_odometry ros2-lidar-odometry.launch.py   start_active:=False   publish_localization_following_rep105:=False   start_mapping_enabled:=False   lidar_topic_name:="/livox/lidar"   imu_topic_name:="/livox/imu"   mola_tf_base_link:="base_link"   mola_deskew_method:="MotionCompensationMethod::IMU"   mola_initial_map_mm_file:=$(pwd)/myMap.mm
+
+
+export MOLA_LO_PUBLISH_DESKEWED_SCANS=true
+cd ~/ros2_mola_ws/
+source install/setup.bash 
+ros2 launch mola_lidar_odometry ros2-lidar-odometry.launch.py   start_active:=True   publish_localization_following_rep105:=False   start_mapping_enabled:=False   lidar_topic_name:="/livox/lidar"   imu_topic_name:="/livox/imu"   mola_tf_base_link:="base_link"   mola_deskew_method:="MotionCompensationMethod::IMU"   mola_initial_map_mm_file:=$(pwd)/myMap.mm
+
+export MOLA_LO_PUBLISH_DESKEWED_SCANS=true
+source install/setup.bash 
+ros2 launch mola_lidar_odometry ros2-lidar-odometry.launch.py   start_active:=True   publish_localization_following_rep105:=False   start_mapping_enabled:=False   lidar_topic_name:="/livox/lidar"   imu_topic_name:="/livox/imu"   mola_tf_base_link:="base_link"   mola_deskew_method:="MotionCompensationMethod::IMU"   mola_initial_map_mm_file:=$(pwd)/myMap.mm
+
+
+ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 base_link livox_frame
+
+
+ros2 bag play rosbag2_2026_03_03-15_06_01/ --loop
+
+source install/setup.bash  && ros2 launch terrain_analysis terrain_analysis.launch 
+
+source install/setup.bash  && ros2 launch terrain_analysis_ext terrain_analysis_ext.launch 
+
+source install/setup.bash  && ros2 launch far_planner far_planner.launch.py
+
+
+MOLA_GENERATE_SIMPLEMAP=true \
+MOLA_SIMPLEMAP_OUTPUT="myMap.simplemap" \
+MOLA_SIMPLEMAP_MIN_XYZ=0.2 \
+MOLA_LO_INITIAL_LOCALIZATION_METHOD="InitLocalization::PitchAndRollFromIMU" \
+MOLA_DESKEW_METHOD=MotionCompensationMethod::IMU \
+MOLA_IMU_TOPIC="/livox/imu" \
+MOLA_LIDAR_TOPIC="/livox/lidar" \
+MOLA_TF_BASE_LINK="base_link" \
+mola-lo-gui-rosbag2 \
+  /home/yasiru/Documents/Far_planner_test/rosbag2_2026_03_03-14_46_17
+
+
+
+  MOLA_USE_FIXED_LIDAR_POSE=true \
+MOLA_USE_FIXED_IMU_POSE=true \
+MOLA_GENERATE_SIMPLEMAP=true \
+MOLA_SIMPLEMAP_OUTPUT="myMap.simplemap" \
+MOLA_SIMPLEMAP_MIN_XYZ=0.2 \
+MOLA_LO_INITIAL_LOCALIZATION_METHOD="InitLocalization::PitchAndRollFromIMU" \
+MOLA_DESKEW_METHOD="MotionCompensationMethod::IMU" \
+MOLA_IMU_TOPIC="/livox/imu" \
+MOLA_LIDAR_TOPIC="/livox/lidar" \
+MOLA_TF_BASE_LINK="Head_upper" \
+mola-lo-gui-rosbag2 /home/yasiru/Documents/rosbags/rosbag_004
+
+sm2mm -i myMap.simplemap -o myMap.mm -p sm2mm_no_decim_imu_mls_keyframe_map.yaml
+
+mm-viewer myMap.mm  -l libmola_metric_maps.so
+
+cd workspaces/go2_webrtc_bridge/
+source install/setup.bash 
+ros2 launch go2_webrtc_bridge bridge.launch.py robot_ip:=192.168.8.160
+
+MOLA_MINIMUM_RANGE_FILTER=0.05
+./scripts/run_localization_pipeline.sh all-real
+
+./scripts/run_localization_pipeline.sh local
+
+cd workspaces/far_planner/
+source install/setup.bash 
+rviz2 -d src/far_planner/config/far_planner.rviz
+
+colcon  build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo
+
+ssh rgen@192.168.8.181
+
+
+#rosbag recording ws
+
+source install/setup.bash
+ros2 run rosbag_recorder recorder_node
+
+source install/setup.bash
+ros2 action send_goal /record_bag rosbag_recorder_msgs/action/Record "{record: true}"
+
+#map_creator_ws
+
+cd /home/yasiru/Documents/Far_planner_test/workspaces/mola_lo
+source install/setup.bash
+cd /home/yasiru/Documents/Far_planner_test/workspaces/map_creator_ws
+source install/setup.bash
+ros2 run map_creator map_creator_node
+
+cd /home/yasiru/Documents/Far_planner_test/workspaces/map_creator_ws
+source install/setup.bash
+ros2 action send_goal /create_map map_creator_msgs/action/CreateMap "{rosbag_path: '/path/to/your/rosbag'}"
+
+
+
+
+# cd /home/yasiru/Documents/Far_planner_test/workspaces/mola_lo
+# source install/setup.bash
+# cd /home/yasiru/Documents/Far_planner_test/workspaces/map_creator_ws
+# source install/setup.bash
+
+
+# ros2 run rosbag_recorder recorder_node &
+# ros2 run map_creator map_creator_node &
+
+
+cd /home/yasiru/Documents/Far_planner_test/workspaces/mola_lo
+source install/setup.bash
+cd /home/yasiru/Documents/Far_planner_test/workspaces/map_creator_ws
+source install/setup.bash
+ros2 action send_goal /record_bag rosbag_recorder_msgs/action/Record "{record: true}"
+
+
+cd /home/yasiru/Documents/Far_planner_test/workspaces/mola_lo
+source install/setup.bash
+cd /home/yasiru/Documents/Far_planner_test/workspaces/map_creator_ws
+source install/setup.bash
+ros2 action send_goal /create_map map_creator_msgs/action/CreateMap "{rosbag_path: '/home/yasiru/Documents/Far_planner_test/rosbags/recorded_mcap_bag'}"
+
+
+# zenoh-bridge-ros2dds -e tcp/192.168.8.181:7447
+# zenoh-bridge-ros2dds
+
+source workspaces/mola_lo/install/setup.bash 
+mm-viewer /home/yasiru/Documents/Far_planner_test/maps/myMap.mm  -l libmola_metric_maps.so
+
+
+/home/yasiru/Documents/Far_planner_test/scripts/run_localization_pipeline.sh all-real
+/home/yasiru/Documents/Far_planner_test/scripts/run_localization_pipeline.sh foxglove
+/home/yasiru/Documents/Far_planner_test/scripts/run_localization_pipeline.sh 
+/home/yasiru/Documents/Far_planner_test/scripts/run_localization_pipeline.sh terrain
+/home/yasiru/Documents/Far_planner_test/scripts/run_localization_pipeline.sh dlio
+/home/yasiru/Documents/Far_planner_test/scripts/run_localization_pipeline.sh far
+
+#MAPPING ACTION SERVERS
+/home/yasiru/Documents/Far_planner_test/scripts/launch_mapping_nodes.sh
+
+
+# cd workspaces/far_planner/
+# source install/setup.bash 
+# rviz2 -d /home/yasiru/Downloads/far_planner.rviz
+
+
+# cd /home/yasiru/Documents/Far_planner_test/workspaces
+# source install/setup.bash
+# ros2 run goal_convertor goal_convertor_node
+
+
+#go2 control
+
+python3 /home/yasiru/Documents/Far_planner_test/workspaces/go2_webrtc_bridge/src/launch/joystick.launch.py 
+
+cd workspaces/go2_webrtc_bridge/
+source install/setup.bash 
+ros2 launch go2_webrtc_bridge bridge.launch.py robot_ip:=192.168.8.160
+
+
+
+#camera
+
+ source Documents/Visual_Inspection_ws/inspection_ws/install/setup.bash
+ ros2 run visual_inspection_ros camera_node
+
+ source Documents/Visual_Inspection_ws/inspection_ws/install/setup.bash
+ ros2 run visual_inspection_ros ibvs_action_server 
+
+
+
+ ros2 topic pub --once /initialpose geometry_msgs/msg/PoseWithCovarianceStamped "
+header:
+  frame_id: 'map'
+pose:
+  pose:
+    position:
+      x: 7.7779
+      y: -17.2161
+      z: 0.0
+    orientation:
+      z: 0.2925
+      w: 0.9563
+  covariance: [0.25, 0, 0, 0, 0, 0,
+               0, 0.25, 0, 0, 0, 0,
+               0, 0, 0.25, 0, 0, 0,
+               0, 0, 0, 0.1, 0, 0,
+               0, 0, 0, 0, 0.1, 0,
+               0, 0, 0, 0, 0, 0.1]
+"
+
+
+
+ros2 topic pub --once /initialpose geometry_msgs/msg/PoseWithCovarianceStamped "
+header:
+  frame_id: 'map'
+pose:
+  pose:
+    position:
+      x: 7.7779
+      y: -17.2161
+      z: -3.0
+    orientation:
+      z: 0.2925
+      w: 0.9563
+  covariance: [0.25, 0, 0, 0, 0, 0,
+               0, 0.25, 0, 0, 0, 0,
+               0, 0, 0.25, 0, 0, 0,
+               0, 0, 0, 0.1, 0, 0,
+               0, 0, 0, 0, 0.1, 0,
+               0, 0, 0, 0, 0, 0.1]
+"
+
+
+ros2 topic pub --once /initialpose geometry_msgs/msg/PoseWithCovarianceStamped "
+header:
+  frame_id: 'map'
+pose:
+  pose:
+    position:
+      x: 0.3906
+      y: -19.5439
+      z: 0.0
+    orientation:
+      z: 0.4168
+      w: 0.9089
+  covariance: [0.25, 0, 0, 0, 0, 0,
+               0, 0.25, 0, 0, 0, 0,
+               0, 0, 0.25, 0, 0, 0,
+               0, 0, 0, 0.1, 0, 0,
+               0, 0, 0, 0, 0.1, 0,
+               0, 0, 0, 0, 0, 0.1]
+"
+
+
+
+
+source install/setup.bash
+ros2 launch go2_webrtc_bridge bridge.launch.py robot_ip:=192.168.8.160
+
+#gait 1:walk 2:run 3: climb 4:decend
+ros2 service call /set_gait example_interfaces/srv/AddTwoInts "{a: 1, b: 0}"
+
+#color
+ros2 service call /set_color example_interfaces/srv/AddTwoInts "{a: 5, b: 0}"
+
+#standup
+ros2 service call /set_action example_interfaces/srv/AddTwoInts "{a: 1, b: 0}"
+
+#sit
+ros2 service call /set_action example_interfaces/srv/AddTwoInts "{a: 0, b: 0}"
+
+
+ cd workspaces/mola_lo/
+ source install/setup.bash 
+ros2 service call /mola_runtime_param_set mola_msgs/srv/MolaRuntimeParamSet \
+   "{parameters: \"mola::LidarOdometry:lidar_odom:\n  active: true\n\"}"
+
+
+cd workspaces/dlio/ 
+source install/setup.bash
+ros2 launch direct_lidar_inertial_odometry dlio_mapping.launch.py
+
+
+ros2 launch direct_lidar_inertial_odometry dlio_mapping.launch.py start_dlio:=false
+
+# Turn DLIO ON:
+ros2 service call /dlio/enable std_srvs/srv/SetBool "{data: true}"
+
+# Turn DLIO OFF:
+ros2 service call /dlio/enable std_srvs/srv/SetBool "{data: false}"
+
+
+ros2 topic pub /goal_point geometry_msgs/msg/PointStamped "
+header:
+  frame_id: 'map'
+point:
+  x: 1.0
+  y: 2.0
+  z: 0.0
+"
+
+ros2 run point_cloud_transport republish   --ros-args   --remap in:=/livox/lidar   --remap out:=/points_compressed   -p out_transport:=cloudini
+
+ros2 run cloudini_ros cloudini_topic_converter   --ros-args   -p compressing:=false   -p topic_input:=/out/cloudini   -p topic_output:=/points_raw_decoded
+
+
+
+ros2 topic pub --once /start_exploration std_msgs/msg/Bool "{data: true}"
+ros2 topic pub --once /start_exploration std_msgs/msg/Bool "{data: false}"
+
+
+#HOST PC BASHRC
+
+start_robot() {
+  # Define the workspace path to keep things readable
+  local CLOUD_WS="/home/yasiru/Documents/Far_planner_test/workspaces/cloudini/install/setup.bash"
+  local ROS_BASE="/opt/ros/humble/setup.bash"
+  
+  # Base command to source everything - we will prepend this to every pane
+  local INIT="source $ROS_BASE && source $CLOUD_WS"
+
+  # 1. CREATE THE SESSION FIRST (This fixes the /tmp/tmux error!)
+  tmux new-session -d -s robot
+
+  # Run the Converter in the first pane
+  tmux send-keys -t robot "$INIT && ros2 run cloudini_ros cloudini_topic_converter --ros-args -p compressing:=false -p topic_input:=/out/cloudini -p topic_output:=/points_raw_decoded" C-m
+
+  # 2. Split for the Zenoh Bridge
+  tmux split-window -h -t robot
+  tmux send-keys -t robot "$INIT && zenoh-bridge-ros2dds -e tcp/192.168.8.181:7447" C-m
+
+  # 3. Clean up layout and attach (Fixed the missing space typo here)
+  tmux select-layout -t robot tiled
+  tmux attach -t robot
+}
+
+
+#ROBOT BASHRC
+
+
+
+cd workspaces/tare_planner/
+source install/setup.bash 
+ros2 launch tare_planner explore.launch 
+
+
+
+
+cd workspaces/local_planner_linear/
+source install/setup.bash 
+ros2 launch local_planner local_planner.launch 
+
+
+
+ros2 service call /resume_visibility_graph_update std_srvs/srv/Trigger {}
+
+
+
+
+
+ros2 service call /set_gait go2_interfaces/srv/SetGait "{gait_type: 1}" 
+
+response: go2_interfaces.srv.SetGait_Response(success=True, message='Gait switch to type 1 dispatched') 
+
+ros2 service call /set_led go2_interfaces/srv/SetLed "{color_index: 3}" 
+
+response: go2_interfaces.srv.SetLed_Response(success=True, message='LED colour set to BLUE') 
+
+ros2 service call /set_pose go2_interfaces/srv/SetPose "{stand_up: true}" 
+ros2 service call /set_pose go2_interfaces/srv/SetPose "{stand_up: false}" 
+
+
+response: go2_interfaces.srv.SetPose_Response(success=True, message="Pose command 'StandUp' dispatched successfully")

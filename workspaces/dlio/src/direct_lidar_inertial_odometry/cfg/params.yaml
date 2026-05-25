@@ -1,0 +1,68 @@
+###########################################################
+#                                                         #
+# Copyright (c)                                           #
+#                                                         #
+# The Verifiable & Control-Theoretic Robotics (VECTR) Lab #
+# University of California, Los Angeles                   #
+#                                                         #
+# Authors: Kenny J. Chen, Ryan Nemiroff, Brett T. Lopez   #
+# Contact: {kennyjchen, ryguyn, btlopez}@ucla.edu         #
+#                                                         #
+###########################################################
+# OPTIMIZED FOR REAL-TIME PERFORMANCE
+# - Odometry + Path + Registered Scan only
+# - Adaptive parameters disabled (fixed for speed)
+# - Metrics/Debug disabled
+###########################################################
+
+/**:
+  ros__parameters:
+    use_sim_time: true
+    frames/odom: map
+    frames/baselink: base_link
+    frames/lidar: livox_frame
+    frames/imu: base_link
+
+    # Map settings - optimized for real-time
+    map/waitUntilMove: false         # Publish immediately (no delay)
+    map/dense/filtered: true         # Use filtered scan (smaller, faster)
+    map/sparse/leafSize: 0.25
+
+    odom/gravity: 9.80665
+    odom/computeTimeOffset: true
+
+    odom/imu/approximateGravity: false
+    odom/imu/calibration/gyro: true
+    odom/imu/calibration/accel: true
+    odom/imu/calibration/time: 3.0
+    odom/imu/bufferSize: 10000       # Increased to 10000
+
+    odom/preprocessing/cropBoxFilter/size: 1.0
+    odom/preprocessing/voxelFilter/res: 0.05
+
+    # Keyframe thresholds - reduced for denser maps
+    odom/keyframe/threshD: 0.5
+    odom/keyframe/threshR: 5.0
+
+    # Submap settings - optimized values
+    odom/submap/keyframe/knn: 10
+    odom/submap/keyframe/kcv: 10
+    odom/submap/keyframe/kcc: 10
+    
+    # GICP parameters - Tuned for simulation
+    odom/gicp/minNumPoints: 64
+    odom/gicp/kCorrespondences: 20
+    odom/gicp/maxCorrespondenceDistance: 2.0
+    odom/gicp/maxIterations: 64
+    odom/gicp/transformationEpsilon: 0.001
+    odom/gicp/rotationEpsilon: 0.0005
+    odom/gicp/initLambdaFactor: 1e-9
+
+    # Geometric observer parameters
+    odom/geo/Kp: 4.5
+    odom/geo/Kv: 11.25
+    odom/geo/Kq: 4.0
+    odom/geo/Kab: 2.25
+    odom/geo/Kgb: 1.0
+    odom/geo/abias_max: 5.0
+    odom/geo/gbias_max: 0.5

@@ -1,0 +1,195 @@
+{
+  "configById": {
+    "3D!18i6zy7": {
+      "layers": {
+        "845139cb-26bc-40b3-8161-8ab60af4baf5": {
+          "visible": true,
+          "frameLocked": true,
+          "label": "Grid",
+          "instanceId": "845139cb-26bc-40b3-8161-8ab60af4baf5",
+          "layerId": "foxglove.Grid",
+          "size": 10,
+          "divisions": 10,
+          "lineWidth": 1,
+          "color": "#248eff",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "order": 1
+        }
+      },
+      "cameraState": {
+        "perspective": true,
+        "distance": 10.266841665578418,
+        "phi": 53.38100102146487,
+        "thetaOffset": -91.05720122573248,
+        "targetOffset": [
+          1.247803601679732,
+          -0.11171147301315723,
+          -2.0964726409708163e-16
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "targetOrientation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "fovy": 45,
+        "near": 0.5,
+        "far": 5000
+      },
+      "followMode": "follow-none",
+      "followTf": "odom",
+      "scene": {
+        "transforms": {
+          "visible": true,
+          "labelSize": 0.03,
+          "axisScale": 0.5
+        },
+        "syncCamera": false,
+        "enableStats": true
+      },
+      "transforms": {},
+      "topics": {
+        "/velodyne_points": {
+          "visible": false,
+          "colorField": "ring",
+          "colorMode": "gradient",
+          "colorMap": "turbo",
+          "pointSize": 7,
+          "decayTime": 0,
+          "gradient": [
+            "#5e3b60ff",
+            "rgba(227, 177, 135, 1)"
+          ],
+          "minValue": 0,
+          "stixelsEnabled": false
+        },
+        "/robot_description": {
+          "visible": true
+        },
+        "/set_pose": {
+          "visible": false
+        },
+        "/move_base_simple/goal": {
+          "visible": false
+        },
+        "/initialpose": {
+          "visible": false
+        },
+        "/foot": {
+          "visible": false
+        },
+        "/base_to_footprint_pose": {
+          "visible": false
+        },
+        "/dlio/odom_node/pointcloud/deskewed": {
+          "visible": true,
+          "colorField": "z",
+          "colorMode": "gradient",
+          "colorMap": "turbo",
+          "pointSize": 5,
+          "decayTime": 5000
+        }
+      },
+      "publish": {
+        "type": "point",
+        "poseTopic": "/move_base_simple/goal",
+        "pointTopic": "/clicked_point",
+        "poseEstimateTopic": "/initialpose",
+        "poseEstimateXDeviation": 0.5,
+        "poseEstimateYDeviation": 0.5,
+        "poseEstimateThetaDeviation": 0.26179939
+      },
+      "imageMode": {}
+    },
+    "TransformTree!hi4ln3": {},
+    "Teleop!fogdit": {
+      "topic": "/cmd_vel",
+      "publishRate": 1,
+      "upButton": {
+        "field": "linear-x",
+        "value": 1
+      },
+      "downButton": {
+        "field": "linear-x",
+        "value": 0
+      },
+      "leftButton": {
+        "field": "angular-z",
+        "value": 1
+      },
+      "rightButton": {
+        "field": "angular-z",
+        "value": -1
+      }
+    },
+    "Plot!jpowdp": {
+      "paths": [
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/cmd_vel.linear.x",
+          "enabled": true,
+          "color": "#4e98e2"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/cmd_vel.linear.y",
+          "enabled": true,
+          "color": "#f5774d"
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/cmd_vel.linear.z",
+          "enabled": true,
+          "color": "#f7df71"
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": false,
+      "isSynced": true,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240,
+      "foxglovePanelTitle": "Speeds"
+    }
+  },
+  "globalVariables": {
+    "": ""
+  },
+  "userNodes": {},
+  "playbackConfig": {
+    "speed": 1
+  },
+  "drawerConfig": {
+    "tracks": []
+  },
+  "layout": {
+    "first": "3D!18i6zy7",
+    "second": {
+      "first": {
+        "first": "TransformTree!hi4ln3",
+        "second": "Plot!jpowdp",
+        "direction": "column"
+      },
+      "second": "Teleop!fogdit",
+      "direction": "column"
+    },
+    "direction": "row",
+    "splitPercentage": 70
+  }
+}

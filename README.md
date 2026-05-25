@@ -22,10 +22,9 @@
 
 This repository contains a complete autonomous navigation stack for the **Unitree Go2** quadruped robot, featuring:
 
-- **DLIO** - Direct LiDAR-Inertial Odometry with CUDA-accelerated GICP
-- **Open3D SLAM** - Dense mapping and localization
-- **Far Planner** - GPU-accelerated visibility graph planning
+- **MOLA LO** - Modular Optimization Framework for LiDAR Odometry and mapping
 - **Terrain Analysis** - Real-time traversability assessment
+- **Far Planner** - GPU-accelerated visibility graph planning
 - **Local Planner** - Reactive obstacle avoidance
 
 ---
@@ -39,22 +38,21 @@ This repository contains a complete autonomous navigation stack for the **Unitre
 ### Data Flow
 
 ```
-LiDAR + IMU  ──►  DLIO  ──►  Open3D SLAM  ──►  Terrain Analysis  ──►  Far Planner  ──►  Local Planner  ──►  Go2 Robot
-                   │              │                   │
-              /odom_dlio    /state_estimation    /terrain_map
-                                                      │
-                                               Terrain Analysis Ext
-                                                      │
-                                               /terrain_map_ext
+LiDAR + IMU  ──►  MOLA LO  ──►  Terrain Analysis  ──►  Far Planner  ──►  Local Planner  ──►  Go2 Robot
+                     │                   │
+             /lidar_odometry        /terrain_map
+                                         │
+                                  Terrain Analysis Ext
+                                         │
+                                  /terrain_map_ext
 ```
 
 ### Key Topics
 
 | Topic | Source | Description |
 |-------|--------|-------------|
-| `/odom_dlio` | DLIO | LiDAR-inertial odometry |
-| `/state_estimation` | Open3D SLAM | Fused localization |
-| `/registered_scan` | Open3D SLAM | Registered point cloud in map frame |
+| `/lidar_odometry/pose` | MOLA LO | LiDAR-inertial odometry and state estimation |
+| `/lidar_odometry/deskewed_scan_points` | MOLA LO | Registered point cloud |
 | `/terrain_map` | Terrain Analysis | Local traversability (near-field) |
 | `/terrain_map_ext` | Terrain Analysis Ext | Extended traversability (far-field) |
 
@@ -70,7 +68,7 @@ LiDAR + IMU  ──►  DLIO  ──►  Open3D SLAM  ──►  Terrain Analysi
 
 | Component | Description | Acceleration |
 |-----------|-------------|--------------|
-| **DLIO** | LiDAR-Inertial Odometry | CUDA (GICP) |
+| **MOLA LO** | LiDAR Odometry and Mapping | Standard |
 | **Far Planner** | Global path planning | CUDA (Visibility Graph) |
 | **Boundary Handler** | Obstacle boundary processing | CUDA |
 | **Terrain Analysis** | Local traversability (4m radius) | CPU + OpenMP |
@@ -115,6 +113,18 @@ The terrain analysis nodes require tuning based on your robot's physical dimensi
 <param name="terrainUnderVehicle" value="-BASE_LINK_HEIGHT - 0.1" />
 ```
 
+### Slope Analysis
+
+Slope is the nature of the slope.
+
+<p align="center">
+  <img src="docs/images/slope.png" alt="Slope Nature" width="800" />
+</p>
+
+<p align="center">
+  <img src="docs/images/far_planner_slope_graph.png" alt="Far Planner Slope Graph" width="800" />
+</p>
+
 ---
 
 ## Visualization
@@ -128,10 +138,51 @@ The terrain analysis nodes require tuning based on your robot's physical dimensi
 ### Visibility Graph (CUDA-Accelerated)
 
 <p align="center">
-  <img src="docs/images/image.png" alt="Visibility Graph" width="800" />
+  <img src="docs/images/Far_planner_in_action.png" alt="Far Planner in Action" width="800" />
 </p>
 
 The cyan lines show the **visibility graph** - navigation nodes that can "see" each other without obstacles. This computation is **GPU-accelerated** for real-time performance.
+
+---
+
+## Mission Planning UI
+
+A modern, web-based interface is provided for high-level mission control and telemetry visualization.
+
+<p align="center">
+  <img src="docs/images/Mission_Planner_UI.png" alt="Mission Planner UI" width="800" />
+</p>
+
+### Frontend Features
+- **Interactive Map**: Point-and-click interface to set navigation goals on the global map.
+- **Waypoint Management**: specific locations can be saved, named, and recalled from a persistent list.
+- **Live Video Feed**: Low-latency video streaming from the robot's camera.
+- **Teleoperation**: Virtual joystick for manual control overrides.
+
+### Backend Architecture
+The backend uses **FastAPI** to bridge ROS2 topics with the web frontend via WebSockets.
+
+- **Technology**: Python (FastAPI, Uvicorn), AsyncIO.
+- **Real-time Data**:
+  - `/ws/points` &rarr; Stream of voxelized point clouds.
+  - `/ws/tf` &rarr; Robot pose and map transforms.
+  - `/ws/video` &rarr; JPEG-encoded camera stream.
+- **Persistence**: `waypoints.json` stores user-defined locations.
+
+---
+
+## Voxelized Point Cloud
+
+To ensure smooth performance on the web interface, the high-density SLAM point cloud is downsampled before transmission.
+
+### Overview
+- **Node**: `voxel_grid_node` (C++)
+- **Function**: Applies a PCL VoxelGrid filter to reduce point count (~10x reduction) while preserving structural features.
+- **Topic Flow**:
+  - Input: `/dlio/map_node/map` (High density from SLAM)
+  - Output: `/registered_scan_o3d/voxelized` (Optimized for Web UI)
+- **Configuration**:
+  - `voxel_size`: Default `0.1m` (balances bandwidth vs. detail).
 
 ---
 
@@ -154,16 +205,69 @@ cd Go2_planner_suite
 ./scripts/build.sh
 ```
 
-### Launch (Simulation)
+### Map Creation
+
+<p align="center">
+  <img src="docs/images/mapping_tool.png" alt="Mapping Tool" width="800" />
+</p>
 
 ```bash
-./scripts/sim.sh
+MOLA_USE_FIXED_LIDAR_POSE=true \
+MOLA_USE_FIXED_IMU_POSE=true \
+MOLA_GENERATE_SIMPLEMAP=true \
+MOLA_SIMPLEMAP_OUTPUT="myMap.simplemap" \
+MOLA_SIMPLEMAP_MIN_XYZ=0.2 \
+MOLA_LO_INITIAL_LOCALIZATION_METHOD="InitLocalization::PitchAndRollFromIMU" \
+MOLA_DESKEW_METHOD="MotionCompensationMethod::IMU" \
+MOLA_IMU_TOPIC="/livox/imu" \
+MOLA_LIDAR_TOPIC="/livox/lidar" \
+MOLA_TF_BASE_LINK="Head_upper" \
+mola-lo-gui-rosbag2 /home/yasiru/Documents/rosbags/rosbag_004
+
+sm2mm -i myMap.simplemap -o myMap.mm -p sm2mm_no_decim_imu_mls_keyframe_map.yaml
+
+mm-viewer myMap.mm  -l libmola_metric_maps.so
+
+MOLA_GENERATE_SIMPLEMAP=true \
+MOLA_SIMPLEMAP_OUTPUT="myMap.simplemap" \
+MOLA_SIMPLEMAP_MIN_XYZ=0.2 \
+MOLA_LO_INITIAL_LOCALIZATION_METHOD="InitLocalization::PitchAndRollFromIMU" \
+MOLA_DESKEW_METHOD=MotionCompensationMethod::IMU \
+MOLA_IMU_TOPIC="/livox/imu" \
+MOLA_LIDAR_TOPIC="/livox/lidar" \
+MOLA_TF_BASE_LINK="base_link" \
+mola-lo-gui-rosbag2 \
+  /home/yasiru/Documents/Far_planner_test/rosbag2_2026_03_03-14_46_17
 ```
 
-### Launch (Real Robot)
+### Re-localization
 
 ```bash
-./scripts/launch.sh
+export MOLA_LO_PUBLISH_DESKEWED_SCANS=true
+source install/setup.bash 
+ros2 launch mola_lidar_odometry ros2-lidar-odometry.launch.py \
+  start_active:=True \
+  publish_localization_following_rep105:=False \
+  start_mapping_enabled:=False \
+  lidar_topic_name:="/livox/lidar" \
+  imu_topic_name:="/livox/imu" \
+  mola_tf_base_link:="base_link" \
+  mola_deskew_method:="MotionCompensationMethod::IMU" \
+  mola_initial_map_mm_file:=$(pwd)/myMap.mm
+
+ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 base_link livox_frame
+```
+
+### Others
+
+```bash
+ros2 bag play rosbag2_2026_03_03-15_06_01/ --loop
+
+source install/setup.bash  && ros2 launch terrain_analysis terrain_analysis.launch 
+
+source install/setup.bash  && ros2 launch terrain_analysis_ext terrain_analysis_ext.launch 
+
+source install/setup.bash  && ros2 launch far_planner far_planner.launch.py
 ```
 
 ---
@@ -172,15 +276,7 @@ cd Go2_planner_suite
 
 ### What's Accelerated?
 
-#### 1. DLIO - GICP Registration
-
-| Operation | CPU Time | GPU Time | Speedup |
-|-----------|----------|----------|---------|
-| Point Transform | O(N) seq | O(N/1024) parallel | ~100x |
-| KNN Search | O(NxM) seq | O(NxM/1024) parallel | ~50x |
-| Hessian Computation | O(N) seq | O(N/1024) parallel | ~100x |
-
-#### 2. Far Planner - Visibility Graph
+#### 1. Far Planner - Visibility Graph
 
 | Scenario | Nodes | Edges | CPU Time | GPU Time |
 |----------|-------|-------|----------|----------|
@@ -191,11 +287,6 @@ cd Go2_planner_suite
 ### Key CUDA Kernels
 
 ```cpp
-// DLIO - Point cloud registration
-__global__ void transformPointsKernel(...);
-__global__ void knnSearchKernel(...);
-__global__ void computeHessianKernel(...);
-
 // Far Planner - Visibility checking
 __global__ void ComputeVisibilityConnections(...);
 __device__ bool IsEdgeCollidePolygons_GPU(...);
@@ -224,12 +315,10 @@ Go2_planner_suite/
     │   ├── terrain_analysis/        # Local traversability mapping (near-field)
     │   ├── terrain_analysis_ext/    # Extended traversability mapping (far-field)
     │   └── go2_simulator/           # Gazebo simulation for Go2
-    ├── dlio/                        # CUDA-accelerated LiDAR-Inertial odometry
-    │   └── src/nano_gicp/cuda/      # GICP CUDA kernels
+    ├── mola_lidar_odometry/         # MOLA LO framework
     ├── far_planner/                 # CUDA-accelerated global planner
     │   ├── far_planner/             # Core visibility graph planner + CUDA
     │   └── boundary_handler/        # Obstacle boundary CUDA kernels
-    ├── open3d_slam_ws/              # Open3D SLAM for dense mapping
     └── pipeline_launcher/           # System orchestration & launch management
 ```
 
@@ -270,21 +359,12 @@ Go2_planner_suite/
 </details>
 
 <details>
-<summary><b>Q: DLIO is not receiving IMU data?</b></summary>
+<summary><b>Q: MOLA LO is not receiving IMU data?</b></summary>
 
 **A:** Check:
-1. IMU topic name matches config: `ros2 topic list | grep imu`
+1. IMU topic name matches config (e.g. `MOLA_IMU_TOPIC`)
 2. IMU data rate is sufficient (>100Hz recommended)
 3. Timestamps are synchronized with LiDAR
-</details>
-
-<details>
-<summary><b>Q: Open3D SLAM shows "Failed to add odometry pose to buffer"?</b></summary>
-
-**A:** This means DLIO odometry isn't reaching Open3D SLAM. Verify:
-1. DLIO is running and publishing `/odom_dlio`
-2. Topic remapping is correct in launch file
-3. Timestamps are valid (not zero)
 </details>
 
 ### Planning
@@ -437,7 +517,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-- [DLIO](https://github.com/vectr-ucla/direct_lidar_inertial_odometry) - Base odometry implementation
+- [MOLA](https://github.com/MOLAorg/mola) - Modular Optimization Framework for LiDAR Odometry
 - [FAR Planner](https://github.com/MichaelFYang/far_planner) - Planning algorithms
 - [Unitree Robotics](https://www.unitree.com/) - Go2 robot platform
 

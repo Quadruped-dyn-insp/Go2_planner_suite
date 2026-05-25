@@ -5,7 +5,6 @@
 #include "contour_graph.h"
 #include "terrain_planner.h"
 #include "map_handler.h"
-#include "far_planner_cuda_wrapper.h"
 
 
 struct DynamicGraphParams {
@@ -18,7 +17,6 @@ struct DynamicGraphParams {
     float filter_pos_margin;
     float filter_dirs_margin;
     float frontier_perimeter_thred;
-    bool  use_gpu = true;  // GPU acceleration enabled by default
 };
 
 class DynamicGraph {  
